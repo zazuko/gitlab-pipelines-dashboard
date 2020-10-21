@@ -1,15 +1,17 @@
+import type { VuexOidcState } from 'vuex-oidc'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import oidc from './oidc'
+
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+export interface RootState {
+  oidc: VuexOidcState;
+}
+
+export default new Vuex.Store<RootState>({
   modules: {
+    oidc
   }
 })
