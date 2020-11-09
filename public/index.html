@@ -10,6 +10,18 @@
       href="https://cdn.materialdesignicons.com/5.3.45/css/materialdesignicons.min.css"
     />
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <% if (NODE_ENV == "production") { %>
+    <script src="<%= BASE_URL %>config.js"></script>
+    <% } else { %>
+    <!-- Keep this in sync with .env.local, public/config.js.template and types/global.d.ts -->
+    <script type="text/javascript">
+      window.APP_CONFIG = {
+        gitlab: "<%= VUE_APP_GITLAB %>",
+        oidcClientId: "<%= VUE_APP_OIDC_CLIENT_ID %>",
+        publicUrl: "http://localhost:8080"
+      };
+    </script>
+    <% } %>
   </head>
   <body class="has-navbar-fixed-top">
     <noscript>
