@@ -11,7 +11,7 @@ import store from '@/store'
 Vue.use(VueApollo)
 
 // Http endpoint
-const httpEndpoint = `${process.env.VUE_APP_GITLAB}/api/graphql`
+const httpEndpoint = `${window.APP_CONFIG.gitlab}/api/graphql`
 
 const httpLink = createHttpLink({
   uri: httpEndpoint
