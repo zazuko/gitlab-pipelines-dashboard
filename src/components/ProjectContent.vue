@@ -11,7 +11,12 @@
       <p v-if="project.pipelines.nodes.length > 0">Pipelines:</p>
       <ul v-if="project.pipelines.nodes.length > 0">
         <li v-for="pipeline in project.pipelines.nodes" :key="pipeline.id">
-          {{ pipeline.status }} ({{ pipeline.createdAt }}, duration:
+          {{ pipeline.status }} (<timeago
+          :datetime="pipeline.createdAt"
+          :title="pipeline.createdAt"
+          :auto-update="60"
+          class="time-ago"
+        ></timeago>, duration:
           {{ pipeline.duration }}s) -
           <a
             :href="
@@ -35,3 +40,10 @@ export default {
   ]
 }
 </script>
+
+<style scoped>
+.time-ago {
+  border-bottom: 1px dashed #4a4a4a;
+  cursor: help;
+}
+</style>
