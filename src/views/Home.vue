@@ -2,22 +2,24 @@
   <div class="home">
     <app-header />
 
-    <div v-if="group && group.projects">
-      <div v-for="project in group.projects.nodes" :key="project.id">
-        <b-collapse
-          class="card"
-          animation="slide"
-          :open="isOpen == project.id"
-          @open="isOpen = project.id"
-        >
-          <project-header
-            slot="trigger"
-            slot-scope="props"
-            :project="project"
-            :open="props.open"
-          />
-          <project-content :project="project" />
-        </b-collapse>
+    <div class="container">
+      <div v-if="group && group.projects">
+        <div v-for="project in group.projects.nodes" :key="project.id">
+          <b-collapse
+            class="card"
+            animation="slide"
+            :open="isOpen == project.id"
+            @open="isOpen = project.id"
+          >
+            <project-header
+              slot="trigger"
+              slot-scope="props"
+              :project="project"
+              :open="props.open"
+            />
+            <project-content :project="project" />
+          </b-collapse>
+        </div>
       </div>
     </div>
   </div>

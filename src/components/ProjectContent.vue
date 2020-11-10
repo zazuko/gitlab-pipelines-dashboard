@@ -36,7 +36,7 @@
           {{ schedule.description }}
           <ul>
             <li>Next run at: {{ schedule.nextRunAt }}</li>
-            <li>Cron: {{ schedule.cron }}</li>
+            <li>Cron: <code>{{ schedule.cron }}</code></li>
             <li>Active: {{ schedule.active }}</li>
             <li>Ref: {{ schedule.ref }}</li>
           </ul>
