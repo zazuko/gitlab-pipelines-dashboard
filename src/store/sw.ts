@@ -1,4 +1,5 @@
 import { Module } from 'vuex'
+import { NotificationProgrammatic as Notification } from 'buefy'
 
 type State = {
   ready: boolean;
@@ -61,6 +62,11 @@ const swModule: Module<State, unknown> = {
       if (registration?.waiting) {
         registration.waiting.postMessage({ type: 'SKIP_WAITING' })
       }
+      Notification.open({
+        message: 'A new version is available. Please refresh!',
+        position: 'is-bottom-right',
+        hasIcon: true
+      })
     },
     offline ({ commit }) {
       commit('offline')

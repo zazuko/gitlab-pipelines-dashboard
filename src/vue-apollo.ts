@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import VueApollo from 'vue-apollo'
-import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
+import VueApollo from '@vue/apollo-option'
+import { ApolloClient, ApolloLink, createHttpLink } from '@apollo/client/core'
+import type { NextLink, Operation, FetchResult } from '@apollo/client/core'
 import { RestLink } from 'apollo-link-rest'
-import { setContext } from 'apollo-link-context'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloLink, FetchResult, NextLink, Operation } from 'apollo-link'
+import { setContext } from '@apollo/client/link/context'
+import { InMemoryCache } from '@apollo/client/cache'
+import { persistCacheSync } from 'apollo3-cache-persist'
 import { DirectiveNode, visit } from 'graphql'
 import camelCase from 'camelcase'
 import { snakeCase } from 'snake-case'
@@ -99,13 +99,23 @@ const link = authLink
 
 const cache = new InMemoryCache()
 
+persistCacheSync({
+  cache,
+  storage: window.localStorage
+})
+
 const client = new ApolloClient({
   link,
   cache
 })
 
 const provider = new VueApollo({
-  defaultClient: client
+  defaultClient: client,
+  defaultOptions: {
+    $query: {
+      fetchPolicy: 'cache-and-network'
+    }
+  }
 })
 
 export { provider, client }
