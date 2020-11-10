@@ -92,7 +92,10 @@ const authLink = setContext(async (_req, ctx) => {
   }
 })
 
-const link = authLink.concat(restLink).concat(directiveLink).concat(httpLink)
+const link = authLink
+  .concat(restLink)
+  .concat(directiveLink)
+  .concat(httpLink)
 
 const cache = new InMemoryCache()
 

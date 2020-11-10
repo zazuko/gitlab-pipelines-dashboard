@@ -30,6 +30,7 @@ import gql from 'graphql-tag'
 import AppHeader from '../components/AppHeader.vue'
 import ProjectHeader from '../components/ProjectHeader.vue'
 import ProjectContent from '../components/ProjectContent.vue'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -38,6 +39,7 @@ export default {
     }
   },
   components: { AppHeader, ProjectHeader, ProjectContent },
+  computed: mapState(['sw']),
   apollo: {
     group: gql`
       query {

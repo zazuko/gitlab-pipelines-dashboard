@@ -66,5 +66,18 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "vue": {
+    "pwa": {
+      "workboxOptions": {
+        "runtimeCaching": [
+          {
+            "handler": "CacheFirst",
+            "urlPattern": "/config.js",
+            "method": "GET"
+          }
+        ]
+      }
+    }
   }
 }

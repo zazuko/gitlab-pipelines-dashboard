@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Build the app
 COPY package.json package-lock.json ./
-RUN npm install -g @vue/cli-service-global
 RUN npm ci
 COPY . .
 ENV NODE_ENV=production
