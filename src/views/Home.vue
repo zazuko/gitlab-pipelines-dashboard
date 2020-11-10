@@ -10,7 +10,12 @@
           :open="isOpen == project.id"
           @open="isOpen = project.id"
         >
-          <project-header slot="trigger" slot-scope="props" :project="project" :open="props.open" />
+          <project-header
+            slot="trigger"
+            slot-scope="props"
+            :project="project"
+            :open="props.open"
+          />
           <project-content :project="project" />
         </b-collapse>
       </div>
@@ -38,13 +43,21 @@ export default {
           id
           projects {
             nodes {
-              id
+              id @export(as: "id")
               webUrl
               name
               visibility
               avatarUrl
               description
               tagList
+              schedules @rest(path: "/projects/{exportVariables.id}/pipeline_schedules", type: "[PipelineSchedule]") {
+                id
+                cron
+                nextRunAt
+                active
+                description
+                ref
+              }
               namespace {
                 fullName
                 description
