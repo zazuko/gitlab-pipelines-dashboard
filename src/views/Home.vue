@@ -3,6 +3,48 @@
     <app-header />
 
     <div class="container">
+      <b-field grouped>
+        <b-field label="Filter by name" expanded custom-class="is-small">
+          <b-input v-model="state.name"></b-input>
+        </b-field>
+
+        <b-field label="Pipeline status" custom-class="is-small">
+          <b-dropdown v-model="state.statuses" multiple aria-role="list">
+            <button class="button is-primary" type="button" slot="trigger">
+              <span v-if="state.statuses.length === 0">No filter</span>
+              <span v-else>Selected ({{ state.statuses.length }})</span>
+            </button>
+
+            <b-dropdown-item
+              v-for="status in allStatuses"
+              :key="status"
+              :value="status"
+              aria-role="listitem"
+            >
+              <span>{{ status }}</span>
+            </b-dropdown-item>
+          </b-dropdown>
+        </b-field>
+
+        <b-field label="Project tags" custom-class="is-small">
+          <b-dropdown v-model="state.tags" multiple aria-role="list">
+            <button class="button is-primary" type="button" slot="trigger">
+              <span v-if="state.tags.length === 0">No filter</span>
+              <span v-else>Selected ({{ state.tags.length }})</span>
+            </button>
+
+            <b-dropdown-item
+              v-for="tag in allTags"
+              :key="tag"
+              :value="tag"
+              aria-role="listitem"
+            >
+              <span>{{ tag }}</span>
+            </b-dropdown-item>
+          </b-dropdown>
+        </b-field>
+      </b-field>
+
       <div v-for="project in projects" :key="project.id">
         <b-collapse
           class="card"
@@ -174,8 +216,11 @@ export default defineComponent({
 
     const projects = useResult(result, [] as Project[], (data) => data.group.projects.nodes)
 
-    const state = reactive<{ open: string | null }>({
-      open: null
+    const state = reactive<{ open: string | null; statuses: string[]; name: string; tags: string[] }>({
+      open: null,
+      statuses: [],
+      name: '',
+      tags: []
     })
 
     const mappedProjects = computed(() => projects.value.map((project: Project): MappedProject => ({
@@ -204,12 +249,74 @@ export default defineComponent({
       }
     }))
 
+    const allStatuses = computed(() => [...new Set(mappedProjects.value.map((project: MappedProject) => {
+      if (!project.lastPipeline) {
+        return 'without pipeline'
+      } else {
+        return project.lastPipeline.status.toLocaleLowerCase()
+      }
+    }))])
+
+    const allTags = computed(() => [...new Set(mappedProjects.value.map((project: MappedProject) => {
+      if (project.tags.length === 0) {
+        return 'without tag'
+      } else {
+        return project.tags
+      }
+    }).flat())])
+
+    const filteredProjects = computed(() => mappedProjects.value.filter((project: MappedProject) => {
+      let displayProject = false
+      if (state.statuses.length > 0) {
+        if (state.statuses.includes('without pipeline')) {
+          if (!project.lastPipeline) {
+            displayProject = true
+          }
+        }
+        if (project.lastPipeline) {
+          if (state.statuses.includes(project.lastPipeline.status.toLocaleLowerCase())) {
+            displayProject = true
+          }
+        }
+      } else {
+        displayProject = true
+      }
+
+      if (!displayProject) {
+        return false
+      }
+
+      if (state.name.length > 0) {
+        if (!project.name.toLocaleLowerCase().includes(state.name.toLocaleLowerCase())) {
+          return false
+        }
+      }
+
+      displayProject = false
+      if (state.tags.length > 0) {
+        if (state.tags.includes('without tag')) {
+          if (project.tags.length === 0) {
+            displayProject = true
+          }
+        }
+        if (project.tags.length > 0) {
+          displayProject = project.tags.some(t => state.tags.includes(t))
+        }
+      } else {
+        displayProject = true
+      }
+
+      return displayProject
+    }))
+
     function open (id: string) {
       state.open = id
     }
 
     return {
-      projects: mappedProjects,
+      projects: filteredProjects,
+      allStatuses,
+      allTags,
       state,
       open
     }
