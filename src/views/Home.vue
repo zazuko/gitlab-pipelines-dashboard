@@ -76,6 +76,7 @@ type Project = {
 type MappedProject = Project & {
   isOpen: boolean;
   lastPipeline?: Pipeline;
+  tags: string[];
 }
 
 type Query = {
@@ -180,7 +181,8 @@ export default defineComponent({
     const mappedProjects = computed(() => projects.value.map((project: Project): MappedProject => ({
       ...project,
       isOpen: project.id === state.open,
-      lastPipeline: project.pipelines.nodes[0]
+      lastPipeline: project.pipelines.nodes[0],
+      tags: [...new Set(project.tagList.split(',').map(tag => tag.trim()))].filter(tag => tag !== '')
     })).sort((a, b) => {
       // Make the project without pipelines go to the end of the list
       if (!a.lastPipeline && !b.lastPipeline) {

@@ -106,16 +106,16 @@ persistCacheSync({
 
 const client = new ApolloClient({
   link,
-  cache
-})
-
-const provider = new VueApollo({
-  defaultClient: client,
+  cache,
   defaultOptions: {
-    $query: {
+    watchQuery: {
       fetchPolicy: 'cache-and-network'
     }
   }
+})
+
+const provider = new VueApollo({
+  defaultClient: client
 })
 
 export { provider, client }

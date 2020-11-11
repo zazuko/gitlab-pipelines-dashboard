@@ -16,21 +16,26 @@
           :datetime="project.lastPipeline.createdAt"
           :auto-update="60"
         ></timeago>
-        (duration: {{ project.lastPipeline.duration }}s)
-        {{ project.lastPipeline.status }}
+        {{ '' }}
+        <custom-tag :status="project.lastPipeline.status" />
       </span>
-      <b-icon :icon="open ? 'menu-up' : 'menu-down'"> </b-icon>
+
+      {{ open ? '▲' : '▼' }}
     </a>
   </div>
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+import CustomTag from './CustomTag.vue'
+
+export default Vue.extend({
+  components: { CustomTag },
   props: [
     'project',
     'open'
   ]
-}
+})
 </script>
 
 <style lang="scss">

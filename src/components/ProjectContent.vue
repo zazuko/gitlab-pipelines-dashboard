@@ -8,16 +8,22 @@
         >
       </p>
 
+      <div v-if="project.tags.length > 0" class="tags">
+        <span v-for="tag in project.tags" class="tag" :key="tag">{{tag}}</span>
+      </div>
+
       <p v-if="project.pipelines.nodes.length > 0">Pipelines:</p>
       <ul v-if="project.pipelines.nodes.length > 0">
         <li v-for="pipeline in project.pipelines.nodes" :key="pipeline.id">
-          {{ pipeline.status }} (<timeago
+          <custom-tag :status="pipeline.status" />
+          {{ ' ' }}
+          <timeago
             :datetime="pipeline.createdAt"
             :title="pipeline.createdAt"
             :auto-update="60"
             class="time-ago"
           ></timeago
-          >, duration: {{ pipeline.duration }}s) -
+          >, duration: {{ pipeline.duration }}s -
           <a
             :href="
               project.webUrl + '/-/pipelines/' + pipeline.id.replace(/.*\//, '')
@@ -35,7 +41,7 @@
         <li v-for="schedule in project.schedules" :key="schedule.id">
           {{ schedule.description }}
           <ul>
-            <li>Next run at: {{ schedule.nextRunAt }}</li>
+            <li>Next run at: <custom-date :date="schedule.nextRunAt" /></li>
             <li>Cron: <code>{{ schedule.cron }}</code></li>
             <li>Active: {{ schedule.active }}</li>
             <li>Ref: {{ schedule.ref }}</li>
@@ -47,11 +53,16 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+import CustomDate from './CustomDate.vue'
+import CustomTag from './CustomTag.vue'
+
+export default Vue.extend({
+  components: { CustomDate, CustomTag },
   props: [
     'project'
   ]
-}
+})
 </script>
 
 <style scoped>

@@ -41,9 +41,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import gql from 'graphql-tag'
 
-export default {
+export default Vue.extend({
   apollo: {
     currentUser: gql`
       query {
@@ -54,5 +55,5 @@ export default {
       }
     `
   }
-}
+})
 </script>
