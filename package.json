@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
+    "@vue/apollo-composable": "^4.0.0-alpha.12",
     "@vue/apollo-option": "^4.0.0-alpha.11",
+    "@vue/composition-api": "^1.0.0-beta.19",
     "apollo-link-rest": "^0.8.0-beta.0",
     "apollo3-cache-persist": "^0.8.0",
     "buefy": "^0.9.4",

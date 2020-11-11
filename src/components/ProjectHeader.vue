@@ -2,9 +2,8 @@
   <div
     class="card-header gitlab-project"
     role="button"
-    v-bind:class="
-      project.pipelines.nodes.length > 0 && project.pipelines.nodes[0].status
-        ? `pipeline-${project.pipelines.nodes[0].status}`.toLowerCase()
+    v-bind:class="project.lastPipeline
+        ? `pipeline-${project.lastPipeline.status}`.toLowerCase()
         : ''
     "
   >
@@ -12,13 +11,13 @@
       {{ project.name }}
     </p>
     <a class="card-header-icon">
-      <span v-if="project.pipelines.nodes.length > 0">
+      <span v-if="project.lastPipeline">
         <timeago
-          :datetime="project.pipelines.nodes[0].createdAt"
+          :datetime="project.lastPipeline.createdAt"
           :auto-update="60"
         ></timeago>
-        (duration: {{ project.pipelines.nodes[0].duration }}s)
-        {{ project.pipelines.nodes[0].status }}
+        (duration: {{ project.lastPipeline.duration }}s)
+        {{ project.lastPipeline.status }}
       </span>
       <b-icon :icon="open ? 'menu-up' : 'menu-down'"> </b-icon>
     </a>
