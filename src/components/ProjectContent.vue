@@ -9,14 +9,16 @@
       </p>
 
       <div v-if="project.tags.length > 0" class="tags">
-        <span v-for="tag in project.tags" class="tag" :key="tag">{{tag}}</span>
+        <span v-for="tag in project.tags" class="tag" :key="tag">{{
+          tag
+        }}</span>
       </div>
 
       <p v-if="project.pipelines.nodes.length > 0">Pipelines:</p>
       <ul v-if="project.pipelines.nodes.length > 0">
         <li v-for="pipeline in project.pipelines.nodes" :key="pipeline.id">
           <custom-tag :status="pipeline.status" />
-          {{ ' ' }}
+          {{ " " }}
           <timeago
             :datetime="pipeline.createdAt"
             :title="pipeline.createdAt"
@@ -44,7 +46,15 @@
             <li>Next run at: <custom-date :date="schedule.nextRunAt" /></li>
             <li>Cron: <pipeline-cron :cron="schedule.cron" /></li>
             <li>Active: {{ schedule.active }}</li>
-            <li>Ref: {{ schedule.ref }}</li>
+            <li>
+              Ref:
+              <a
+                :href="project.webUrl + '/-/tree/' + schedule.ref"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{{ schedule.ref }}</a
+              >
+            </li>
           </ul>
         </li>
       </ul>
