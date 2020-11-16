@@ -1,43 +1,31 @@
 <template>
-  <nav
-    class="navbar is-fixed-top"
-    role="navigation"
-    aria-label="main navigation"
-  >
-    <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item has-text-weight-bold" href="/">
-          Pipelines Dashboard
-        </a>
+  <b-navbar wrapper-class="container" :spaced="true" :shadow="true">
+    <template slot="brand">
+      <b-navbar-item
+        tag="a"
+        href="https://zazuko.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img src="../assets/zazuko-logo.svg" alt="Zazuko" />
+      </b-navbar-item>
+    </template>
+    <template slot="start">
+      <b-navbar-item href="/">Pipelines Dashboard</b-navbar-item>
+    </template>
 
-        <a
-          role="button"
-          class="navbar-burger burger"
-          aria-label="menu"
-          aria-expanded="false"
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <p v-if="currentUser">
-              Logged in as
-              <strong
-                >{{ currentUser.name }}
-                <small>({{ currentUser.email }})</small></strong
-              >
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
+    <template slot="end">
+      <b-navbar-item tag="div">
+        <p v-if="currentUser">
+          Logged in as
+          <strong>
+            {{ currentUser.name }}
+            <small>({{ currentUser.email }})</small>
+          </strong>
+        </p>
+      </b-navbar-item>
+    </template>
+  </b-navbar>
 </template>
 
 <script lang="ts">

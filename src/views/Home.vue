@@ -3,7 +3,7 @@
     <app-header />
 
     <div class="container">
-      <b-field grouped>
+      <b-field grouped class="my-4">
         <b-field label="Filter by name" expanded custom-class="is-small">
           <b-input v-model="state.name"></b-input>
         </b-field>
