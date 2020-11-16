@@ -22,11 +22,10 @@ build:
       executor \
         --context="$CI_PROJECT_DIR" \
         --dockerfile=Dockerfile \
-        $(gitlab-docker-tag | sed "s|.*|--destination=${CI_REGISTRY_IMAGE}:&|") \
+        --destination="$CI_REGISTRY_IMAGE" \
         --build-arg="BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
         --build-arg="COMMIT=$CI_COMMIT_SHA" \
-        --destination="$CI_REGISTRY_IMAGE" \
-        --build-arg "VERSION=$CI_COMMIT_REF_SLUG" \
+        --build-arg="VERSION=$CI_COMMIT_REF_SLUG" \
         --no-push \
         --tarPath="$CI_PROJECT_DIR/image.tar"
 
