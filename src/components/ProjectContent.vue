@@ -42,7 +42,7 @@
           {{ schedule.description }}
           <ul>
             <li>Next run at: <custom-date :date="schedule.nextRunAt" /></li>
-            <li>Cron: <code>{{ schedule.cron }}</code></li>
+            <li>Cron: <pipeline-cron :cron="schedule.cron" /></li>
             <li>Active: {{ schedule.active }}</li>
             <li>Ref: {{ schedule.ref }}</li>
           </ul>
@@ -57,9 +57,10 @@ import Vue from 'vue'
 import CustomDate from './CustomDate.vue'
 import CustomTag from './CustomTag.vue'
 import PipelineDuration from './PipelineDuration.vue'
+import PipelineCron from './PipelineCron.vue'
 
 export default Vue.extend({
-  components: { CustomDate, CustomTag, PipelineDuration },
+  components: { CustomDate, CustomTag, PipelineDuration, PipelineCron },
   props: [
     'project'
   ]
