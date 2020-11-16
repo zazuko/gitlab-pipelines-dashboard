@@ -23,7 +23,7 @@
             :auto-update="60"
             class="time-ago"
           ></timeago
-          >, duration: {{ pipeline.duration }}s -
+          >, duration: <pipeline-duration :seconds="pipeline.duration" /> -
           <a
             :href="
               project.webUrl + '/-/pipelines/' + pipeline.id.replace(/.*\//, '')
@@ -56,9 +56,10 @@
 import Vue from 'vue'
 import CustomDate from './CustomDate.vue'
 import CustomTag from './CustomTag.vue'
+import PipelineDuration from './PipelineDuration.vue'
 
 export default Vue.extend({
-  components: { CustomDate, CustomTag },
+  components: { CustomDate, CustomTag, PipelineDuration },
   props: [
     'project'
   ]
