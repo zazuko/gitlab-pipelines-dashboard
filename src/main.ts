@@ -9,7 +9,6 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import { provider as apolloProvider, client as apolloClient } from './vue-apollo'
-import 'buefy/dist/buefy.css'
 
 Vue.use(Buefy)
 Vue.use(VueTimeago, {

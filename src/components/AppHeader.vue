@@ -10,6 +10,7 @@
         <img src="../assets/zazuko-logo.svg" alt="Zazuko" />
       </b-navbar-item>
     </template>
+
     <template slot="start">
       <b-navbar-item href="/">Pipelines Dashboard</b-navbar-item>
     </template>

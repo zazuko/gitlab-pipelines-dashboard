@@ -51,28 +51,24 @@ export default Vue.extend({
     opacity: 1;
   }
 
-  &.pipeline-running {
-    border-left: 5px solid yellow;
-    opacity: 1;
-  }
-
   &.pipeline-canceled {
     border-left: 5px solid black;
     opacity: 1;
   }
 
+  &.pipeline-running,
   &.pipeline-scheduled {
-    border-left: 5px solid blue;
+    border-left: 5px solid #3298dc;
     opacity: 1;
   }
 
   &.pipeline-success {
-    border-left: 5px solid green;
+    border-left: 5px solid #48c774;
     opacity: 1;
   }
 
   &.pipeline-failed {
-    border-left: 5px solid red;
+    border-left: 5px solid #f14668;
     opacity: 1;
   }
 }
