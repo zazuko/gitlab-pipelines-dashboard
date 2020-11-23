@@ -45,21 +45,25 @@
         </b-field>
       </b-field>
 
-      <div v-for="project in projects" :key="project.id">
-        <b-collapse
-          class="card"
-          animation="slide"
-          :open="project.isOpen"
-          @open="open(project.id)"
-        >
-          <project-header
-            slot="trigger"
-            slot-scope="props"
-            :project="project"
-            :open="props.open"
-          />
-          <project-content :project="project" />
-        </b-collapse>
+      <b-loading :is-full-page="false" v-model="loading" :can-cancel="false" />
+
+      <div v-if="!loading && !error">
+        <div v-for="project in projects" :key="project.id">
+          <b-collapse
+            class="card"
+            animation="slide"
+            :open="project.isOpen"
+            @open="open(project.id)"
+          >
+            <project-header
+              slot="trigger"
+              slot-scope="props"
+              :project="project"
+              :open="props.open"
+            />
+            <project-content :project="project" :id="project.id" />
+          </b-collapse>
+        </div>
       </div>
     </div>
   </div>
@@ -72,77 +76,7 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import AppHeader from '../components/AppHeader.vue'
 import ProjectHeader from '../components/ProjectHeader.vue'
 import ProjectContent from '../components/ProjectContent.vue'
-
-type Actor = {
-  name: string;
-}
-
-type Namespace = {
-  fullName: string;
-  description: string;
-};
-
-type Schedule = {
-  id: string;
-  cron: string;
-  nextRunAt: string;
-  active: boolean;
-  description: string;
-  ref: string;
-}
-
-type Pipeline = {
-  createdAt: string;
-  duration: number;
-  id: string;
-  status: PipelineStatus;
-  user: Actor;
-}
-
-type Project = {
-  id: string;
-  webUrl: string;
-  name: string;
-  visibility: string;
-  avatarUrl: string;
-  description: string;
-  tagList: string;
-  schedules: Schedule[];
-  namespace: Namespace;
-  createdAt: string;
-  pipelines: {
-    nodes: Pipeline[];
-  };
-}
-
-type MappedProject = Project & {
-  isOpen: boolean;
-  lastPipeline?: Pipeline;
-  tags: string[];
-}
-
-type Query = {
-  group: {
-    id: string;
-    projects: {
-      nodes: Project[];
-    };
-  };
-}
-
-enum PipelineStatus {
-  Created = 'CREATED',
-  WaitingForResource = 'WAITING_FOR_RESOURCE',
-  Preparing = 'PREPARING',
-  Pending = 'PENDING',
-  Running = 'RUNNING',
-  Failed = 'FAILED',
-  Success = 'SUCCESS',
-  Canceled = 'CANCELED',
-  Skipped = 'SKIPPED',
-  Manual = 'MANUAL',
-  Scheduled = 'SCHEDULED',
-}
+import { PipelineStatus, Query, Project, MappedProject } from '../types/api'
 
 const statusOrder = (status: PipelineStatus): number => {
   switch (status) {
@@ -171,56 +105,53 @@ const statusOrder = (status: PipelineStatus): number => {
 export default defineComponent({
   components: { AppHeader, ProjectHeader, ProjectContent },
   setup () {
-    const { result } = useQuery<Query>(gql`
+    const { result, loading, error } = useQuery<Query>(gql`
       query {
-        group(fullPath: "pipelines") {
-          id
-          projects {
-            nodes {
-              id @export(as: "id")
-              webUrl
-              name
-              visibility
-              avatarUrl
+        projects {
+          nodes {
+            id
+            webUrl
+            name
+            visibility
+            avatarUrl
+            description
+            tagList
+            namespace {
+              fullName
               description
-              tagList
-              schedules @rest(path: "/projects/{exportVariables.id}/pipeline_schedules", type: "[PipelineSchedule]") {
+            }
+            pipelines(first: 10) {
+              nodes {
+                createdAt
+                duration
                 id
-                cron
-                nextRunAt
-                active
-                description
-                ref
-              }
-              namespace {
-                fullName
-                description
-              }
-              pipelines(first: 10) {
-                nodes {
-                  createdAt
-                  duration
-                  id
-                  status
-                  user {
-                    name
-                  }
+                status
+                user {
+                  name
                 }
               }
-              createdAt
             }
+            createdAt
           }
         }
       }
     `)
 
-    const projects = useResult(result, [] as Project[], (data) => data.group.projects.nodes)
+    const projects = useResult(result, [] as Project[], (data) => data.projects.nodes)
+
+    let defaultTags
+    const selectedTags = window.APP_CONFIG.selectedTags
+    if (selectedTags) {
+      defaultTags = [...new Set(selectedTags.split(','))]
+    } else {
+      defaultTags = []
+    }
 
     const state = reactive<{ open: string | null; statuses: string[]; name: string; tags: string[] }>({
       open: null,
       statuses: [],
       name: '',
-      tags: []
+      tags: defaultTags
     })
 
     const mappedProjects = computed(() => projects.value.map((project: Project): MappedProject => ({
@@ -257,13 +188,21 @@ export default defineComponent({
       }
     }))])
 
-    const allTags = computed(() => [...new Set(mappedProjects.value.map((project: MappedProject) => {
-      if (project.tags.length === 0) {
-        return 'without tag'
-      } else {
-        return project.tags
-      }
-    }).flat())])
+    const allTags = computed(() => {
+      const tagsSet = new Set(mappedProjects.value.map((project: MappedProject) => {
+        if (project.tags.length === 0) {
+          return 'without tag'
+        } else {
+          return project.tags
+        }
+      }).flat())
+
+      defaultTags.forEach(tag => {
+        tagsSet.add(tag)
+      })
+
+      return [...tagsSet]
+    })
 
     const filteredProjects = computed(() => mappedProjects.value.filter((project: MappedProject) => {
       let displayProject = false
@@ -318,7 +257,9 @@ export default defineComponent({
       allStatuses,
       allTags,
       state,
-      open
+      open,
+      loading,
+      error
     }
   }
 })

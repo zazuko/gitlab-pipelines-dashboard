@@ -2,7 +2,7 @@
   <div class="card-content">
     <div class="content">
       <p>
-        {{ project.description }} -
+        <span v-if="project.description">{{ project.description }} - </span>
         <a :href="project.webUrl" target="_blank" rel="noopener noreferrer"
           >Open project on GitLab</a
         >
@@ -14,7 +14,9 @@
         }}</span>
       </div>
 
-      <p v-if="project.pipelines.nodes.length > 0">Pipelines:</p>
+      <p v-if="project.pipelines.nodes.length > 0">
+        <strong>Pipelines:</strong>
+      </p>
       <ul v-if="project.pipelines.nodes.length > 0">
         <li v-for="pipeline in project.pipelines.nodes" :key="pipeline.id">
           <custom-tag :status="pipeline.status" />
@@ -38,9 +40,11 @@
       </ul>
       <p v-else><em>No pipeline for this project.</em></p>
 
-      <p v-if="project.schedules.length > 0">Schedules:</p>
-      <ul v-if="project.schedules.length > 0">
-        <li v-for="schedule in project.schedules" :key="schedule.id">
+      <p v-if="!loading && (error || schedules.length > 0)">
+        <strong>Schedules:</strong>
+      </p>
+      <ul v-if="!loading && !error && schedules.length > 0">
+        <li v-for="schedule in schedules" :key="schedule.id">
           {{ schedule.description }}
           <ul>
             <li>Next run at: <custom-date :date="schedule.nextRunAt" /></li>
@@ -58,22 +62,52 @@
           </ul>
         </li>
       </ul>
+      <b-loading :is-full-page="false" v-model="loading" :can-cancel="false" />
+      <b-message type="is-danger" v-if="!loading && error">
+        {{ error }}
+      </b-message>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { defineComponent } from '@vue/composition-api'
 import CustomDate from './CustomDate.vue'
 import CustomTag from './CustomTag.vue'
 import PipelineDuration from './PipelineDuration.vue'
 import PipelineCron from './PipelineCron.vue'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import gql from 'graphql-tag'
+import type { Schedule } from '../types/api'
 
-export default Vue.extend({
+export default defineComponent({
   components: { CustomDate, CustomTag, PipelineDuration, PipelineCron },
   props: [
-    'project'
-  ]
+    'project',
+    'id'
+  ],
+  setup (props) {
+    const { result, loading, error } = useQuery(gql`
+      query Schedules($id: string!) {
+        schedules (id: $id) @rest(path: "/projects/{args.id}/pipeline_schedules", type: "[PipelineSchedule]") {
+          id
+          cron
+          nextRunAt
+          active
+          description
+          ref
+        }
+      }
+    `, { id: props.id })
+
+    const schedules = useResult<Array<Schedule>>(result)
+
+    return {
+      schedules,
+      loading,
+      error
+    }
+  }
 })
 </script>
 

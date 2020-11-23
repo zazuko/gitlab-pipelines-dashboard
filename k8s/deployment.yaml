@@ -22,6 +22,8 @@ spec:
               value: c6b7e6f2aba6f17ca6b314148a762d88e15ace28f99f3b8f415feff0e0b7ed25
             - name: PUBLIC_URL
               value: https://pipelines-dashboard.zazuko.net
+            - name: SELECTED_TAGS
+              value: monitoring
 
           livenessProbe:
             initialDelaySeconds: 5

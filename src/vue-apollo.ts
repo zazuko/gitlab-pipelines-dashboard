@@ -6,7 +6,6 @@ import { RestLink } from 'apollo-link-rest'
 import { setContext } from '@apollo/client/link/context'
 import { InMemoryCache } from '@apollo/client/cache'
 import { persistCacheSync } from 'apollo3-cache-persist'
-import { DirectiveNode, visit } from 'graphql'
 import camelCase from 'camelcase'
 import { snakeCase } from 'snake-case'
 
@@ -37,27 +36,11 @@ const mapId = (obj: unknown): unknown => {
   }))
 }
 
-type RemoveDirectiveLinkSettings = {
-  directive: string;
-}
 class RemoveDirectiveLink extends ApolloLink {
-  private readonly directive: string;
-  constructor ({ directive }: RemoveDirectiveLinkSettings) {
-    super()
-    this.directive = directive
-  }
-
   public request (
     operation: Operation,
     forward: NextLink
   ) {
-    operation.query = visit(operation.query, {
-      Directive: (node: DirectiveNode) => {
-        if (node.name.value === this.directive) {
-          return null
-        }
-      }
-    })
     return forward(operation).map((res) => mapId(res) as FetchResult)
   }
 }
@@ -76,7 +59,7 @@ const restLink = new RestLink({
   fieldNameDenormalizer: (key: string) => snakeCase(key)
 })
 
-const directiveLink = new RemoveDirectiveLink({ directive: 'export' })
+const directiveLink = new RemoveDirectiveLink()
 
 const authLink = setContext(async (_req, ctx) => {
   let authorization

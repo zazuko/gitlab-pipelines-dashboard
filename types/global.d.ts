@@ -4,6 +4,7 @@ type AppConfig = {
   gitlab: string;
   oidcClientId: string;
   publicUrl: string;
+  selectedTags: string;
 }
 
 interface Window {

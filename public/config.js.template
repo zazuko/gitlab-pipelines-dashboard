@@ -1,5 +1,6 @@
 window.APP_CONFIG = {
   gitlab: "$GITLAB",
   oidcClientId: "$OIDC_CLIENT_ID",
-  publicUrl: "$PUBLIC_URL"
+  publicUrl: "$PUBLIC_URL",
+  selectedTags: "$SELECTED_TAGS"
 };

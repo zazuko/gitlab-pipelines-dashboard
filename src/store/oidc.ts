@@ -15,7 +15,8 @@ export default vuexOidcCreateStoreModule({
   clientId: window.APP_CONFIG.oidcClientId || '',
   redirectUri: `${window.APP_CONFIG.publicUrl}/oidc/callback`,
   scope: 'openid profile email read_api read_user api',
-  responseType: 'token'
+  responseType: 'token',
+  automaticSilentRenew: true
 }, {
   namespaced: true,
   publicRoutePaths: ['/oidc/']
