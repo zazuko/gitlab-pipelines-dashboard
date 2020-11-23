@@ -71,7 +71,7 @@
       "workboxOptions": {
         "runtimeCaching": [
           {
-            "handler": "CacheFirst",
+            "handler": "StaleWhileRevalidate",
             "urlPattern": "/config.js",
             "method": "GET"
           }
