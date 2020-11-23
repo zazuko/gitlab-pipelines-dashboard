@@ -10,6 +10,7 @@ TEMPLATE="$WEB_ROOT/config.js.template"
 : "$GITLAB"
 : "$OIDC_CLIENT_ID"
 : "$PUBLIC_URL"
+: "$SELECTED_TAGS"
 
 envsubst < $TEMPLATE > $OUTPUT
 
