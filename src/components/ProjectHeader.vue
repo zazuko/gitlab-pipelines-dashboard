@@ -8,7 +8,7 @@
     "
   >
     <p class="card-header-title">
-      {{ project.name }}
+      {{ projetName }}
     </p>
     <a class="card-header-icon">
       <span v-if="project.lastPipeline">
@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts">
+import { Project } from '@/types/api'
 import Vue from 'vue'
 import CustomTag from './CustomTag.vue'
 
@@ -34,7 +35,33 @@ export default Vue.extend({
   props: [
     'project',
     'open'
-  ]
+  ],
+  computed: {
+    projetName () {
+      const project = this.project as Project
+      let name = project.name
+
+      const namespace = project.namespace
+      if (namespace) {
+        if (namespace.fullName) {
+          name = `${namespace.fullName} / ${name}`
+        } else if (namespace.fullPath) {
+          name = `${namespace.fullPath} / ${name}`
+        }
+      } else {
+        if (project.fullPath) {
+          const splittedPath = project.fullPath.split('/')
+          if (splittedPath.length > 1) {
+            splittedPath.pop()
+          }
+          const prefixPath = splittedPath.join(' / ')
+          name = `${prefixPath} / ${name}`
+        }
+      }
+
+      return name
+    }
+  }
 })
 </script>
 

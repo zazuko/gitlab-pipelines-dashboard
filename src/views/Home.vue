@@ -116,8 +116,11 @@ export default defineComponent({
             avatarUrl
             description
             tagList
+            fullPath
             namespace {
+              name
               fullName
+              fullPath
               description
             }
             pipelines(first: 10) {

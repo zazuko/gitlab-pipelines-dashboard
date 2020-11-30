@@ -13,6 +13,7 @@ export type Actor = {
 
 export type Namespace = {
   fullName: string;
+  fullPath: string;
   description: string;
 };
 
@@ -32,6 +33,7 @@ export type Project = {
   avatarUrl: string;
   description: string;
   tagList: string;
+  fullPath: string;
   namespace: Namespace;
   createdAt: string;
   pipelines: {
