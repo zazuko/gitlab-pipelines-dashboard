@@ -1,15 +1,22 @@
 <template>
-  <div class="tag" :class="computedClass">
+  <div
+    class="tag"
+    :class="computedClass"
+  >
     {{ computedTag }}
   </div>
 </template>
 
 <script lang="ts">
+import { PipelineStatus } from '@/types/api'
 import Vue from 'vue'
 export default Vue.extend({
-  props: [
-    'status'
-  ],
+  props: {
+    status: {
+      type: String as () => PipelineStatus,
+      required: true
+    }
+  },
   computed: {
     computedClass () {
       switch (`${this.status}`.toLocaleLowerCase()) {

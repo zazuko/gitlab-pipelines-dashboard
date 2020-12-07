@@ -1,5 +1,9 @@
 <template>
-  <b-navbar wrapper-class="container" :spaced="true" :shadow="true">
+  <b-navbar
+    wrapper-class="container"
+    :spaced="true"
+    :shadow="true"
+  >
     <template slot="brand">
       <b-navbar-item
         tag="a"
@@ -7,12 +11,17 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img src="../assets/zazuko-logo.svg" alt="Zazuko" />
+        <img
+          src="../assets/zazuko-logo.svg"
+          alt="Zazuko"
+        >
       </b-navbar-item>
     </template>
 
     <template slot="start">
-      <b-navbar-item href="/">Pipelines Dashboard</b-navbar-item>
+      <b-navbar-item href="/">
+        Pipelines Dashboard
+      </b-navbar-item>
     </template>
 
     <template slot="end">

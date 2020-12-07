@@ -1,56 +1,20 @@
-export type Schedule = {
-  id: string;
-  cron: string;
-  nextRunAt: string;
-  active: boolean;
-  description: string;
-  ref: string;
+export interface Schedule {
+  id: string
+  cron: string
+  nextRunAt: string
+  active: boolean
+  description: string
+  ref: string
 }
 
-export type Actor = {
-  name: string;
+export interface Actor {
+  name: string
 }
 
-export type Namespace = {
-  fullName: string;
-  fullPath: string;
-  description: string;
-};
-
-export type Pipeline = {
-  createdAt: string;
-  duration: number;
-  id: string;
-  status: PipelineStatus;
-  user: Actor;
-}
-
-export type Project = {
-  id: string;
-  webUrl: string;
-  name: string;
-  visibility: string;
-  avatarUrl: string;
-  description: string;
-  tagList: string;
-  fullPath: string;
-  namespace: Namespace;
-  createdAt: string;
-  pipelines: {
-    nodes: Pipeline[];
-  };
-}
-
-export type MappedProject = Project & {
-  isOpen: boolean;
-  lastPipeline?: Pipeline;
-  tags: string[];
-}
-
-export type Query = {
-  projects: {
-    nodes: Project[];
-  };
+export interface Namespace {
+  fullName: string
+  fullPath: string
+  description: string
 }
 
 export enum PipelineStatus {
@@ -65,4 +29,40 @@ export enum PipelineStatus {
   Skipped = 'SKIPPED',
   Manual = 'MANUAL',
   Scheduled = 'SCHEDULED',
+}
+
+export interface Pipeline {
+  createdAt: string
+  duration: number
+  id: string
+  status: PipelineStatus
+  user: Actor
+}
+
+export interface Project {
+  id: string
+  webUrl: string
+  name: string
+  visibility: string
+  avatarUrl: string
+  description: string
+  tagList: string
+  fullPath: string
+  namespace: Namespace
+  createdAt: string
+  pipelines: {
+    nodes: Pipeline[]
+  }
+}
+
+export type MappedProject = Project & {
+  isOpen: boolean
+  lastPipeline?: Pipeline
+  tags: string[]
+}
+
+export interface Query {
+  projects: {
+    nodes: Project[]
+  }
 }

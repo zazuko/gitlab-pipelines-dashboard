@@ -9,7 +9,7 @@ import OidcCallback from '../views/OidcCallback.vue'
 
 Vue.use(VueRouter)
 
-const routes: Array<RouteConfig> = [
+const routes: RouteConfig[] = [
   {
     path: '/',
     name: 'Home',

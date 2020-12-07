@@ -3,14 +3,32 @@
     <app-header />
 
     <div class="container">
-      <b-field grouped class="my-4">
-        <b-field label="Filter by name" expanded custom-class="is-small">
-          <b-input v-model="state.name"></b-input>
+      <b-field
+        grouped
+        class="my-4"
+      >
+        <b-field
+          label="Filter by name"
+          expanded
+          custom-class="is-small"
+        >
+          <b-input v-model="state.name" />
         </b-field>
 
-        <b-field label="Pipeline status" custom-class="is-small">
-          <b-dropdown v-model="state.statuses" multiple aria-role="list">
-            <button class="button is-primary" type="button" slot="trigger">
+        <b-field
+          label="Pipeline status"
+          custom-class="is-small"
+        >
+          <b-dropdown
+            v-model="state.statuses"
+            multiple
+            aria-role="list"
+          >
+            <button
+              class="button is-primary"
+              type="button"
+              slot="trigger"
+            >
               <span v-if="state.statuses.length === 0">No filter</span>
               <span v-else>Selected ({{ state.statuses.length }})</span>
             </button>
@@ -26,9 +44,20 @@
           </b-dropdown>
         </b-field>
 
-        <b-field label="Project tags" custom-class="is-small">
-          <b-dropdown v-model="state.tags" multiple aria-role="list">
-            <button class="button is-primary" type="button" slot="trigger">
+        <b-field
+          label="Project tags"
+          custom-class="is-small"
+        >
+          <b-dropdown
+            v-model="state.tags"
+            multiple
+            aria-role="list"
+          >
+            <button
+              class="button is-primary"
+              type="button"
+              slot="trigger"
+            >
               <span v-if="state.tags.length === 0">No filter</span>
               <span v-else>Selected ({{ state.tags.length }})</span>
             </button>
@@ -45,10 +74,17 @@
         </b-field>
       </b-field>
 
-      <b-loading :is-full-page="false" v-model="loading" :can-cancel="false" />
+      <b-loading
+        :is-full-page="false"
+        v-model="loading"
+        :can-cancel="false"
+      />
 
       <div v-if="!loading && !error">
-        <div v-for="project in projects" :key="project.id">
+        <div
+          v-for="project in projects"
+          :key="project.id"
+        >
           <b-collapse
             class="card"
             animation="slide"
@@ -61,7 +97,10 @@
               :project="project"
               :open="props.open"
             />
-            <project-content :project="project" :id="project.id" />
+            <project-content
+              :project="project"
+              :id="project.id"
+            />
           </b-collapse>
         </div>
       </div>

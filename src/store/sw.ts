@@ -1,14 +1,14 @@
-import { Module } from 'vuex'
+import { ActionContext, Module } from 'vuex'
 import { NotificationProgrammatic as Notification } from 'buefy'
 
-type State = {
-  ready: boolean;
-  registered: boolean;
-  cached: boolean;
-  updatefound: boolean;
-  updated: boolean;
-  offline: boolean;
-  error?: Error;
+interface State {
+  ready: boolean
+  registered: boolean
+  cached: boolean
+  updatefound: boolean
+  updated: boolean
+  offline: boolean
+  error?: Error
 }
 
 const swModule: Module<State, unknown> = {
@@ -22,42 +22,42 @@ const swModule: Module<State, unknown> = {
     offline: false
   }),
   mutations: {
-    ready (state) {
+    ready (state: State): void {
       state.ready = true
     },
-    registered (state) {
+    registered (state: State): void {
       state.registered = true
     },
-    cached (state) {
+    cached (state: State): void {
       state.cached = true
     },
-    updatefound (state) {
+    updatefound (state: State): void {
       state.ready = true
     },
-    updated (state) {
+    updated (state: State): void {
       state.updated = true
     },
-    offline (state) {
+    offline (state: State): void {
       state.offline = true
     },
-    error (state, error: Error) {
+    error (state: State, error: Error): void {
       state.error = error
     }
   },
   actions: {
-    ready ({ commit }) {
+    ready ({ commit }: ActionContext<State, unknown>): void {
       commit('ready')
     },
-    registered ({ commit }) {
+    registered ({ commit }: ActionContext<State, unknown>): void {
       commit('registered')
     },
-    cached ({ commit }) {
+    cached ({ commit }: ActionContext<State, unknown>): void {
       commit('cached')
     },
-    updatefound ({ commit }) {
+    updatefound ({ commit }: ActionContext<State, unknown>): void {
       commit('updatefound')
     },
-    updated ({ commit }, registration?: ServiceWorkerRegistration) {
+    updated ({ commit }: ActionContext<State, unknown>, registration?: ServiceWorkerRegistration): void {
       commit('updated')
       if (registration?.waiting) {
         registration.waiting.postMessage({ type: 'SKIP_WAITING' })
@@ -68,10 +68,10 @@ const swModule: Module<State, unknown> = {
         hasIcon: true
       })
     },
-    offline ({ commit }) {
+    offline ({ commit }: ActionContext<State, unknown>): void {
       commit('offline')
     },
-    error ({ commit }, error?: Error) {
+    error ({ commit }: ActionContext<State, unknown>, error?: Error): void {
       commit('error', error)
     }
   }

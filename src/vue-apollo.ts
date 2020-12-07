@@ -25,7 +25,7 @@ const mapId = (obj: unknown): unknown => {
     return obj.map(mapId)
   }
 
-  return Object.fromEntries(Object.entries(obj as object).map(([key, value]) => {
+  return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
     if (typeof value === 'object') {
       return [key, mapId(value)]
     } else if (key === 'id' && typeof value === 'string') {

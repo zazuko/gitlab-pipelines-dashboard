@@ -7,7 +7,7 @@ import Vue from 'vue'
 import cronstrue from 'cronstrue'
 
 export default Vue.extend({
-  props: ['cron'],
+  props: { cron: { type: String, required: true } },
   computed: {
     computedCron () {
       return cronstrue.toString(this.cron, {

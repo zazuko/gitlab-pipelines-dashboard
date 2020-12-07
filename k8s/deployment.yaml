@@ -24,6 +24,8 @@ spec:
               value: https://pipelines-dashboard.zazuko.net
             - name: SELECTED_TAGS
               value: monitoring
+            - name: SENTRY_DSN
+              value: https://3f4428ec88c04539a5a14bb9bf6e3b38@sentry.zazuko.com/6
 
           livenessProbe:
             initialDelaySeconds: 5

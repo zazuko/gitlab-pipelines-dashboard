@@ -3,13 +3,22 @@
     <div class="content">
       <p>
         <span v-if="project.description">{{ project.description }} - </span>
-        <a :href="project.webUrl" target="_blank" rel="noopener noreferrer"
-          >Open project on GitLab</a
-        >
+        <a
+          :href="project.webUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Open project on GitLab</a>
       </p>
 
-      <div v-if="project.tags.length > 0" class="tags">
-        <span v-for="tag in project.tags" class="tag" :key="tag">{{
+      <div
+        v-if="project.tags.length > 0"
+        class="tags"
+      >
+        <span
+          v-for="tag in project.tags"
+          class="tag"
+          :key="tag"
+        >{{
           tag
         }}</span>
       </div>
@@ -18,7 +27,10 @@
         <strong>Pipelines:</strong>
       </p>
       <ul v-if="project.pipelines.nodes.length > 0">
-        <li v-for="pipeline in project.pipelines.nodes" :key="pipeline.id">
+        <li
+          v-for="pipeline in project.pipelines.nodes"
+          :key="pipeline.id"
+        >
           <custom-tag :status="pipeline.status" />
           {{ " " }}
           <timeago
@@ -26,25 +38,28 @@
             :title="pipeline.createdAt"
             :auto-update="60"
             class="time-ago"
-          ></timeago
-          >, duration: <pipeline-duration :seconds="pipeline.duration" /> -
+          />, duration: <pipeline-duration :seconds="pipeline.duration" /> -
           <a
             :href="
               project.webUrl + '/-/pipelines/' + pipeline.id.replace(/.*\//, '')
             "
             target="_blank"
             rel="noopener noreferrer"
-            >Open pipeline on GitLab</a
-          >
+          >Open pipeline on GitLab</a>
         </li>
       </ul>
-      <p v-else><em>No pipeline for this project.</em></p>
+      <p v-else>
+        <em>No pipeline for this project.</em>
+      </p>
 
       <p v-if="!loading && (error || schedules.length > 0)">
         <strong>Schedules:</strong>
       </p>
       <ul v-if="!loading && !error && schedules.length > 0">
-        <li v-for="schedule in schedules" :key="schedule.id">
+        <li
+          v-for="schedule in schedules"
+          :key="schedule.id"
+        >
           {{ schedule.description }}
           <ul>
             <li>Next run at: <custom-date :date="schedule.nextRunAt" /></li>
@@ -56,14 +71,20 @@
                 :href="project.webUrl + '/-/tree/' + schedule.ref"
                 target="_blank"
                 rel="noopener noreferrer"
-                >{{ schedule.ref }}</a
-              >
+              >{{ schedule.ref }}</a>
             </li>
           </ul>
         </li>
       </ul>
-      <b-loading :is-full-page="false" v-model="loading" :can-cancel="false" />
-      <b-message type="is-danger" v-if="!loading && error">
+      <b-loading
+        :is-full-page="false"
+        v-model="loading"
+        :can-cancel="false"
+      />
+      <b-message
+        type="is-danger"
+        v-if="!loading && error"
+      >
         {{ error }}
       </b-message>
     </div>
@@ -78,14 +99,14 @@ import PipelineDuration from './PipelineDuration.vue'
 import PipelineCron from './PipelineCron.vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import type { Schedule } from '../types/api'
+import type { Project, Schedule } from '../types/api'
 
 export default defineComponent({
   components: { CustomDate, CustomTag, PipelineDuration, PipelineCron },
-  props: [
-    'project',
-    'id'
-  ],
+  props: {
+    project: { type: Object as () => Project, required: true },
+    id: { type: String, required: true }
+  },
   setup (props) {
     const { result, loading, error } = useQuery(gql`
       query Schedules($id: string!) {

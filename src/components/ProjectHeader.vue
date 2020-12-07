@@ -2,9 +2,9 @@
   <div
     class="card-header gitlab-project"
     role="button"
-    v-bind:class="project.lastPipeline
-        ? `pipeline-${project.lastPipeline.status}`.toLowerCase()
-        : ''
+    :class="project.lastPipeline
+      ? `pipeline-${project.lastPipeline.status}`.toLowerCase()
+      : ''
     "
   >
     <p class="card-header-title">
@@ -15,7 +15,7 @@
         <timeago
           :datetime="project.lastPipeline.createdAt"
           :auto-update="60"
-        ></timeago>
+        />
         {{ '' }}
         <custom-tag :status="project.lastPipeline.status" />
       </span>
@@ -32,13 +32,16 @@ import CustomTag from './CustomTag.vue'
 
 export default Vue.extend({
   components: { CustomTag },
-  props: [
-    'project',
-    'open'
-  ],
+  props: {
+    project: {
+      type: Object as () => Project,
+      required: true
+    },
+    open: { type: Boolean, default: false }
+  },
   computed: {
     projetName () {
-      const project = this.project as Project
+      const project = this.project
       let name = project.name
 
       const namespace = project.namespace

@@ -6,13 +6,13 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  props: ['seconds'],
+  props: { seconds: { type: Number, required: true } },
   computed: {
     computedSeconds () {
       return `${this.seconds} seconds`
     },
     computedDuration () {
-      const propsSeconds = this.seconds as number
+      const propsSeconds = this.seconds
       const hours = Math.floor(propsSeconds / 3600)
       const minutes = Math.floor((propsSeconds - (hours * 3600)) / 60)
       const seconds = propsSeconds - (hours * 3600) - (minutes * 60)

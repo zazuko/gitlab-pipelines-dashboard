@@ -1,6 +1,5 @@
 import { vuexOidcCreateStoreModule } from 'vuex-oidc'
 
-/* eslint-disable @typescript-eslint/camelcase */
 export default vuexOidcCreateStoreModule({
   authority: `${window.APP_CONFIG.gitlab}`,
   loadUserInfo: false,

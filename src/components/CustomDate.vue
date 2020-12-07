@@ -5,9 +5,9 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  props: [
-    'date'
-  ],
+  props: {
+    date: { type: String, required: true }
+  },
   computed: {
     computedDate () {
       const d = new Date(`${this.date}`)
