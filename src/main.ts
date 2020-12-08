@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import * as Sentry from '@sentry/browser'
-import { Vue as VueIntegration } from '@sentry/integrations'
+import * as Sentry from '@sentry/vue'
 import { Integrations } from '@sentry/tracing'
 import VueTimeago from 'vue-timeago'
 import Buefy from 'buefy'
@@ -14,15 +13,15 @@ import store from './store'
 import { provider as apolloProvider, client as apolloClient } from './vue-apollo'
 
 Sentry.init({
+  Vue,
   dsn: window.APP_CONFIG.sentryDsn,
   integrations: [
-    new VueIntegration({
-      Vue,
-      tracing: true
-    }),
     new Integrations.BrowserTracing()
   ],
-  tracesSampleRate: 1.0
+  tracesSampleRate: 1.0,
+  tracingOptions: {
+    trackComponents: true
+  }
 })
 
 Vue.use(Buefy)
