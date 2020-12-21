@@ -92,7 +92,8 @@ const client = new ApolloClient({
   cache,
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'cache-and-network',
+      pollInterval: 60000
     }
   }
 })
