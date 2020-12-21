@@ -30,7 +30,6 @@
           Logged in as
           <strong>
             {{ currentUser.name }}
-            <small>({{ currentUser.email }})</small>
           </strong>
         </p>
       </b-navbar-item>
@@ -47,7 +46,6 @@ export default Vue.extend({
     currentUser: gql`
       query {
         currentUser {
-          email
           name
         }
       }
