@@ -93,6 +93,8 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
+import { createNamespacedHelpers } from 'vuex-composition-helpers'
+
 import CustomDate from './CustomDate.vue'
 import CustomTag from './CustomTag.vue'
 import PipelineDuration from './PipelineDuration.vue'
@@ -101,6 +103,9 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import type { Project, Schedule } from '../types/api'
 
+import type { State } from '../store/query'
+const { useState } = createNamespacedHelpers<State>('query')
+
 export default defineComponent({
   components: { CustomDate, CustomTag, PipelineDuration, PipelineCron },
   props: {
@@ -108,6 +113,7 @@ export default defineComponent({
     id: { type: String, required: true }
   },
   setup (props) {
+    const { pollInterval } = useState(['pollInterval'])
     const { result, loading, error } = useQuery(gql`
       query Schedules($id: string!) {
         schedules (id: $id) @rest(path: "/projects/{args.id}/pipeline_schedules", type: "[PipelineSchedule]") {
@@ -119,7 +125,7 @@ export default defineComponent({
           ref
         }
       }
-    `, { id: props.id })
+    `, { id: props.id }, () => ({ pollInterval: pollInterval.value }))
 
     const schedules = useResult<Array<Schedule>>(result)
 

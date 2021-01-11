@@ -1,7 +1,7 @@
 import { ActionContext, Module } from 'vuex'
 import { NotificationProgrammatic as Notification } from 'buefy'
 
-interface State {
+export interface State {
   ready: boolean
   registered: boolean
   cached: boolean
