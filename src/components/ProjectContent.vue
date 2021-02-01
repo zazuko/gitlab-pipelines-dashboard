@@ -38,7 +38,10 @@
             :title="pipeline.createdAt"
             :auto-update="60"
             class="time-ago"
-          />, duration: <pipeline-duration :seconds="pipeline.duration" /> -
+          />, duration: <pipeline-duration
+            v-if="pipeline.duration"
+            :seconds="pipeline.duration"
+          /> -
           <a
             :href="
               project.webUrl + '/-/pipelines/' + pipeline.id.replace(/.*\//, '')
