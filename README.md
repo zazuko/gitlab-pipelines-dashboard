@@ -1,29 +1,10 @@
-# pipelines-dashboard
+# Pipelines dashboard
 
-## Project setup
+> Get an overview of the state of the pipelines of a GitLab instance
 
-```
+## Quick start
+
+```sh
 npm install
+npm run start
 ```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
