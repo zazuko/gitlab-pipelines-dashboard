@@ -12,6 +12,7 @@ export default Vue.extend({
       const redirectPath = await this.$store.dispatch('oidc/oidcSignInCallback')
       this.$router.push(redirectPath)
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err)
       // this.$router.push({ name: 'OidcError' })
     }
