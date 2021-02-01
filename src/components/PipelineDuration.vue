@@ -6,7 +6,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  props: { seconds: { type: Number, required: true } },
+  props: { seconds: { type: Number, default: 0 } },
   computed: {
     computedSeconds () {
       return `${this.seconds} seconds`
