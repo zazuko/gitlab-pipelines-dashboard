@@ -52,10 +52,10 @@
         <em>No pipeline for this project.</em>
       </p>
 
-      <p v-if="!loading && (error || schedules.length > 0)">
+      <p v-if="!schedulesLoading && (schedulesError || schedules.length > 0)">
         <strong>Schedules:</strong>
       </p>
-      <ul v-if="!loading && !error && schedules.length > 0">
+      <ul v-if="!schedulesLoading && !schedulesError && schedules.length > 0">
         <li
           v-for="schedule in schedules"
           :key="schedule.id"
@@ -78,14 +78,14 @@
       </ul>
       <b-loading
         :is-full-page="false"
-        v-model="loading"
+        v-model="schedulesLoading"
         :can-cancel="false"
       />
       <b-message
         type="is-danger"
-        v-if="!loading && error"
+        v-if="!schedulesLoading && schedulesError"
       >
-        {{ error }}
+        {{ schedulesError }}
       </b-message>
     </div>
   </div>
@@ -114,7 +114,8 @@ export default defineComponent({
   },
   setup (props) {
     const { pollInterval } = useState(['pollInterval'])
-    const { result, loading, error } = useQuery(gql`
+
+    const schedulesQuery = useQuery(gql`
       query Schedules($id: string!) {
         schedules (id: $id) @rest(path: "/projects/{args.id}/pipeline_schedules", type: "[PipelineSchedule]") {
           id
@@ -127,12 +128,14 @@ export default defineComponent({
       }
     `, { id: props.id }, () => ({ pollInterval: pollInterval.value }))
 
-    const schedules = useResult<Array<Schedule>>(result)
+    const schedules = useResult<Array<Schedule>>(schedulesQuery.result)
+    const schedulesLoading = schedulesQuery.loading
+    const schedulesError = schedulesQuery.error
 
     return {
       schedules,
-      loading,
-      error
+      schedulesLoading,
+      schedulesError
     }
   }
 })
