@@ -23,12 +23,12 @@
         }}</span>
       </div>
 
-      <p v-if="project.pipelines.nodes.length > 0">
+      <p v-if="pipelines.length > 0">
         <strong>Pipelines:</strong>
       </p>
-      <ul v-if="project.pipelines.nodes.length > 0">
+      <ul v-if="pipelines.length > 0">
         <li
-          v-for="pipeline in project.pipelines.nodes"
+          v-for="pipeline in pipelines"
           :key="pipeline.id"
         >
           <custom-tag :status="pipeline.status" />
@@ -38,7 +38,16 @@
             :title="pipeline.createdAt"
             :auto-update="60"
             class="time-ago"
-          />, duration: <pipeline-duration :seconds="pipeline.duration" /> -
+          />, duration: <pipeline-duration :seconds="pipeline.duration" />
+          <span v-if="pipeline.rest">
+            , ref: <a
+              :href="
+                project.webUrl + '/-/tree/' + pipeline.rest.ref
+              "
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ pipeline.rest.ref }}</a>
+          </span> -
           <a
             :href="
               project.webUrl + '/-/pipelines/' + pipeline.id.replace(/.*\//, '')
@@ -92,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { computed, defineComponent } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
 import CustomDate from './CustomDate.vue'
@@ -101,7 +110,7 @@ import PipelineDuration from './PipelineDuration.vue'
 import PipelineCron from './PipelineCron.vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import type { Project, Schedule } from '../types/api'
+import { PipelineRest, PipelineWithRest, Project, Schedule } from '../types/api'
 
 import type { State } from '../store/query'
 const { useState } = createNamespacedHelpers<State>('query')
@@ -117,7 +126,7 @@ export default defineComponent({
 
     const schedulesQuery = useQuery(gql`
       query Schedules($id: string!) {
-        schedules (id: $id) @rest(path: "/projects/{args.id}/pipeline_schedules", type: "[PipelineSchedule]") {
+        schedules (id: $id) @rest(path: "/projects/{args.id}/pipeline_schedules", type: "[Schedule]") {
           id
           cron
           nextRunAt
@@ -128,11 +137,31 @@ export default defineComponent({
       }
     `, { id: props.id }, () => ({ pollInterval: pollInterval.value }))
 
+    const pipelinesRestQuery = useQuery(gql`
+      query Pipelines($id: string!) {
+        pipelinesRest (id: $id) @rest(path: "/projects/{args.id}/pipelines", type: "[PipelineRest]") {
+          id
+          ref
+          status
+        }
+      }
+    `, { id: props.id }, () => ({ pollInterval: pollInterval.value }))
+
     const schedules = useResult<Array<Schedule>>(schedulesQuery.result)
     const schedulesLoading = schedulesQuery.loading
     const schedulesError = schedulesQuery.error
 
+    const pipelinesRest = useResult<Array<PipelineRest>>(pipelinesRestQuery.result)
+    const pipelines = computed(() => props.project.pipelines.nodes.map((pipeline): PipelineWithRest => {
+      const rest = pipelinesRest.value?.filter(r => `gid://gitlab/Ci::Pipeline/${r.id}` === pipeline.id)[0]
+      return {
+        rest,
+        ...pipeline
+      }
+    }))
+
     return {
+      pipelines,
       schedules,
       schedulesLoading,
       schedulesError

@@ -7,6 +7,12 @@ export interface Schedule {
   ref: string
 }
 
+export interface PipelineRest {
+  id: number;
+  ref: string;
+  status: string;
+}
+
 export interface Actor {
   name: string
 }
@@ -37,6 +43,10 @@ export interface Pipeline {
   id: string
   status: PipelineStatus
   user: Actor
+}
+
+export type PipelineWithRest = Pipeline & {
+  rest?: PipelineRest
 }
 
 export interface Project {
