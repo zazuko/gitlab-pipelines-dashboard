@@ -55,6 +55,15 @@
             target="_blank"
             rel="noopener noreferrer"
           >Open pipeline on GitLab</a>
+          <template v-if="pipeline.status === 'FAILED'">
+            -
+            <button
+              class="button is-small"
+              @click="() => retryPipeline(project.id, pipeline.id.replace(/.*\//, ''))"
+            >
+              Retry pipeline
+            </button>
+          </template>
         </li>
       </ul>
       <p v-else>
@@ -112,8 +121,10 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { PipelineRest, PipelineWithRest, Project, Schedule } from '../types/api'
 
-import type { State } from '../store/query'
-const { useState } = createNamespacedHelpers<State>('query')
+import type { State as QueryState } from '../store/query'
+import type { VuexOidcState } from 'vuex-oidc'
+const { useState } = createNamespacedHelpers<QueryState>('query')
+const { useState: useOidcState } = createNamespacedHelpers<VuexOidcState>('oidc')
 
 export default defineComponent({
   components: { CustomDate, CustomTag, PipelineDuration, PipelineCron },
@@ -122,7 +133,17 @@ export default defineComponent({
     id: { type: String, required: true }
   },
   setup (props) {
+    const { access_token: accessToken } = useOidcState(['access_token'])
     const { pollInterval } = useState(['pollInterval'])
+
+    const retryPipeline = (projectId: number, pipelineId: number) => {
+      fetch(`${window.APP_CONFIG.gitlab}/api/v4/projects/${projectId}/pipelines/${pipelineId}/retry`, {
+        method: 'POST',
+        headers: new Headers({
+          Authorization: `Bearer ${accessToken.value}`
+        })
+      })
+    }
 
     const schedulesQuery = useQuery(gql`
       query Schedules($id: string!) {
@@ -164,7 +185,8 @@ export default defineComponent({
       pipelines,
       schedules,
       schedulesLoading,
-      schedulesError
+      schedulesError,
+      retryPipeline
     }
   }
 })
