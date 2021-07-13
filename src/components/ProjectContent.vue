@@ -136,15 +136,6 @@ export default defineComponent({
     const { access_token: accessToken } = useOidcState(['access_token'])
     const { pollInterval } = useState(['pollInterval'])
 
-    const retryPipeline = (projectId: number, pipelineId: number) => {
-      fetch(`${window.APP_CONFIG.gitlab}/api/v4/projects/${projectId}/pipelines/${pipelineId}/retry`, {
-        method: 'POST',
-        headers: new Headers({
-          Authorization: `Bearer ${accessToken.value}`
-        })
-      })
-    }
-
     const schedulesQuery = useQuery(gql`
       query Schedules($id: string!) {
         schedules (id: $id) @rest(path: "/projects/{args.id}/pipeline_schedules", type: "[Schedule]") {
@@ -167,6 +158,23 @@ export default defineComponent({
         }
       }
     `, { id: props.id }, () => ({ pollInterval: pollInterval.value }))
+
+    const retryPipeline = async (projectId: number, pipelineId: number) => {
+      await fetch(`${window.APP_CONFIG.gitlab}/api/v4/projects/${projectId}/pipelines/${pipelineId}/retry`, {
+        method: 'POST',
+        headers: new Headers({
+          Authorization: `Bearer ${accessToken.value}`
+        })
+      })
+
+      await new Promise((resolve) => setTimeout(resolve, 2_000))
+      await schedulesQuery.refetch()
+      await pipelinesRestQuery.refetch()
+
+      await new Promise((resolve) => setTimeout(resolve, 10_000))
+      await schedulesQuery.refetch()
+      await pipelinesRestQuery.refetch()
+    }
 
     const schedules = useResult<Array<Schedule>>(schedulesQuery.result)
     const schedulesLoading = schedulesQuery.loading
