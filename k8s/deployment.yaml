@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: pipelines-dashboard
-          image: docker.io/zazuko/pipelines-dashboard
+          image: ghcr.io/zazuko/pipelines-dashboard
           imagePullPolicy: Always
 
           ports:
