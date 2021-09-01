@@ -15,5 +15,5 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   },
-  ignorePatterns: ['dist', '.eslintrc.js', 'babel.config.js']
+  ignorePatterns: ['dist', '.eslintrc.js', 'babel.config.js', 'tsconfig.json']
 }
