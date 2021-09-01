@@ -1,4 +1,4 @@
-ARG NODE_VERSION=14
+ARG NODE_VERSION=16
 
 FROM node:${NODE_VERSION} as builder
 
@@ -12,7 +12,7 @@ ENV NODE_ENV=production
 RUN npm run build
 
 
-FROM nginx:1.19.4-alpine
+FROM nginx:1.21-alpine
 
 ADD ./nginx/default.conf /etc/nginx/conf.d/default.conf
 ADD ./nginx/template-config.sh /docker-entrypoint.d/50-template-config.sh
