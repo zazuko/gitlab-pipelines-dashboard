@@ -113,15 +113,15 @@
 import { computed, defineComponent } from '@vue/composition-api'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
-import CustomDate from './CustomDate.vue'
-import CustomTag from './CustomTag.vue'
-import PipelineDuration from './PipelineDuration.vue'
-import PipelineCron from './PipelineCron.vue'
+import CustomDate from '../utils/CustomDate.vue'
+import CustomTag from '../utils/CustomTag.vue'
+import PipelineDuration from '../pipeline/PipelineDuration.vue'
+import PipelineCron from '../pipeline/PipelineCron.vue'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import { PipelineRest, PipelineWithRest, Project, Schedule } from '../types/api'
+import { PipelineRest, PipelineWithRest, Project, Schedule } from '../../types/api'
 
-import type { State as QueryState } from '../store/query'
+import type { State as QueryState } from '../../store/query'
 import type { VuexOidcState } from 'vuex-oidc'
 const { useState } = createNamespacedHelpers<QueryState>('query')
 const { useState: useOidcState } = createNamespacedHelpers<VuexOidcState>('oidc')

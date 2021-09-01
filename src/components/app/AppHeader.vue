@@ -12,7 +12,7 @@
         rel="noopener noreferrer"
       >
         <img
-          src="../assets/zazuko-logo.svg"
+          src="../../assets/zazuko-logo.svg"
           alt="Zazuko"
         >
       </b-navbar-item>

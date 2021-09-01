@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Project } from '@/types/api'
 import Vue from 'vue'
-import CustomTag from './CustomTag.vue'
+import CustomTag from '../utils/CustomTag.vue'
 
 export default Vue.extend({
   components: { CustomTag },

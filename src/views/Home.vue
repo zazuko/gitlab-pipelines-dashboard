@@ -162,9 +162,9 @@ import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { createNamespacedHelpers } from 'vuex-composition-helpers'
 
-import AppHeader from '../components/AppHeader.vue'
-import ProjectHeader from '../components/ProjectHeader.vue'
-import ProjectContent from '../components/ProjectContent.vue'
+import AppHeader from '../components/app/AppHeader.vue'
+import ProjectHeader from '../components/project/ProjectHeader.vue'
+import ProjectContent from '../components/project/ProjectContent.vue'
 import { PipelineStatus, Query, Project, MappedProject } from '../types/api'
 
 import type { State, Actions } from '../store/query'
