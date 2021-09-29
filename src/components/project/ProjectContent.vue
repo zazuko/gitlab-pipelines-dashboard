@@ -11,11 +11,11 @@
       </p>
 
       <div
-        v-if="project.tags.length > 0"
+        v-if="project.topics.length > 0"
         class="tags"
       >
         <span
-          v-for="tag in project.tags"
+          v-for="tag in project.topics"
           class="tag"
           :key="tag"
         >{{
