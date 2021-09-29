@@ -56,7 +56,7 @@ export interface Project {
   visibility: string
   avatarUrl: string
   description: string
-  tagList: string
+  topics: string[]
   fullPath: string
   namespace: Namespace
   createdAt: string
@@ -68,7 +68,7 @@ export interface Project {
 export type MappedProject = Project & {
   isOpen: boolean
   lastPipeline?: Pipeline
-  tags: string[]
+  topics: string[]
 }
 
 export interface Query {

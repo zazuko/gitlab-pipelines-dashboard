@@ -225,7 +225,7 @@ export default defineComponent({
             visibility
             avatarUrl
             description
-            tagList
+            topics
             fullPath
             namespace {
               name
@@ -258,7 +258,7 @@ export default defineComponent({
       ...project,
       isOpen: project.id === state.open,
       lastPipeline: project.pipelines.nodes[0],
-      tags: [...new Set(project.tagList.split(',').map(tag => tag.trim()))].filter(tag => tag !== '')
+      topics: [...new Set(project.topics.map(topic => topic.trim()))].filter(topic => topic !== '')
     })).sort((a, b) => {
       // Make the project without pipelines go to the end of the list
       if (!a.lastPipeline && !b.lastPipeline) {
@@ -290,10 +290,10 @@ export default defineComponent({
 
     const allTags = computed(() => {
       const tagsSet = new Set(mappedProjects.value.map((project: MappedProject) => {
-        if (project.tags.length === 0) {
+        if (project.topics.length === 0) {
           return 'without tag'
         } else {
-          return project.tags
+          return project.topics
         }
       }).flat())
 
@@ -334,12 +334,12 @@ export default defineComponent({
       displayProject = false
       if (state.tags.length > 0) {
         if (state.tags.includes('without tag')) {
-          if (project.tags.length === 0) {
+          if (project.topics.length === 0) {
             displayProject = true
           }
         }
-        if (project.tags.length > 0) {
-          displayProject = project.tags.some(t => state.tags.includes(t))
+        if (project.topics.length > 0) {
+          displayProject = project.topics.some(t => state.tags.includes(t))
         }
       } else {
         displayProject = true
