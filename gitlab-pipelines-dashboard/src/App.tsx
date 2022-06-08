@@ -1,6 +1,10 @@
-import React from 'react';
+import env from "react-dotenv";
 import logo from './logo.svg';
 import './App.css';
+
+const GitLabInstance = env.GITLAB
+
+console.log(GitLabInstance)
 
 function App() {
   return (
