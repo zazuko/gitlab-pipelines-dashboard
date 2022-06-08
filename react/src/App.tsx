@@ -1,16 +1,14 @@
 import env from "react-dotenv";
-import logo from './logo.svg';
+import Header from './components/Header';
 import './App.css';
 
 const GitLabInstance = env.GITLAB
 
-console.log(GitLabInstance)
-
 function App() {
   return (
     <div className="App">
+      <Header />
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
