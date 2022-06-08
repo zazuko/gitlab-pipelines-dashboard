@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@axa-fr/react-oidc": "^5.10.1",
-    "@ludovicm67/react-dotenv": "^1.0.2",
+    "@ludovicm67/react-dotenv": "^1.0.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
