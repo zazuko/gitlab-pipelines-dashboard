@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import env from '@ludovicm67/react-dotenv';
 import { OidcProvider } from '@axa-fr/react-oidc';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { clientId, gitlabUrl, publicUrl } from './lib/env';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-// fetch values from config
-const publicUrl = env.PUBLIC_URL;
-const gitlabUrl = env.GITLAB;
-const clientId = env.OIDC_CLIENT_ID;
 
 const OIDCConfiguration = {
   client_id: clientId || '',
@@ -24,6 +20,8 @@ const OIDCConfiguration = {
   }
 };
 
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -31,7 +29,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <OidcProvider configuration={OIDCConfiguration}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </OidcProvider>
   </React.StrictMode>
 );
