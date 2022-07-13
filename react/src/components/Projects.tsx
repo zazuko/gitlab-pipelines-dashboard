@@ -18,6 +18,7 @@ const Projects = () => {
   }
 
   if (projects.isSuccess) {
+    console.log('data', projects.data);
     return <ul>{projects.data.map((project: any, i: number) => <li key={i}>{ project.name_with_namespace }</li>)}</ul>
   }
 
