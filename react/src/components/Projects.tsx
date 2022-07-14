@@ -1,6 +1,7 @@
 import { useOidcUser, OidcUserStatus, useOidcAccessToken } from '@axa-fr/react-oidc';
 import { useQuery } from 'react-query';
 import gitlabQuery from '../lib/gitlabQuery';
+import Project from './Project';
 
 const Projects = () => {
   const { accessToken } = useOidcAccessToken();
@@ -19,11 +20,13 @@ const Projects = () => {
 
   if (projects.isSuccess) {
     console.log('data', projects.data);
-    return <ul>{projects.data.map((project: any, i: number) => <li key={i}>{ project.name_with_namespace }</li>)}</ul>
+    return <ul>{projects.data.map((project: any, i: number) => {
+      return <Project key={i} project={project} />
+    })}</ul>
   }
 
   return <div className="container">
-    <p>List of all projects:</p>
+    <p>There was an issue while fetching projects…</p>
   </div>
 };
 
