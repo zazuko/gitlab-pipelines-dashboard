@@ -1,12 +1,5 @@
 .DS_Store
 node_modules
-/dist
-
-
-# local env files
-.env
-.env.local
-.env.*.local
 
 # Log files
 npm-debug.log*
@@ -22,3 +15,23 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# dependencies
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+public/env.js

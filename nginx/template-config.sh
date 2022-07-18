@@ -4,8 +4,8 @@ set -eu
 
 WEB_ROOT=/usr/share/nginx/html
 
-OUTPUT="$WEB_ROOT/config.js"
-TEMPLATE="$WEB_ROOT/config.template.js"
+OUTPUT="$WEB_ROOT/env.js"
+TEMPLATE="$WEB_ROOT/env.template.js"
 
 : "$GITLAB"
 : "$OIDC_CLIENT_ID"

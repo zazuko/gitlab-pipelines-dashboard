@@ -1,7 +1,6 @@
 .git/
 node_modules/
-k8s/
 Dockerfile
-.gitlab-ci.yml
 .env
 .env.*
+public/env.js
