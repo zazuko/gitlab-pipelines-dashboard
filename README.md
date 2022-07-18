@@ -36,10 +36,10 @@ cp .env.example .env
 
 And update the values with you information:
 
-- `VUE_APP_GITLAB`: the public URL of your GitLab instance (for example: https://gitlab.com)
-- `VUE_APP_OIDC_CLIENT_ID`: the client ID you got from the previous step
-- `VUE_APP_SELECTED_TAGS`: tags to be selected by default (for example: `monitoring`)
-- `VUE_APP_SENTRY_DSN`: the Sentry Data Source Name (if you want to use Sentry)
+- `GITLAB`: the public URL of your GitLab instance (for example: https://gitlab.com)
+- `OIDC_CLIENT_ID`: the client ID you got from the previous step
+- `SELECTED_TAGS`: tags to be selected by default (for example: `monitoring`)
+- `SENTRY_DSN`: the Sentry Data Source Name (if you want to use Sentry)
 
 ### Start the project
 

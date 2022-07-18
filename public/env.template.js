@@ -1,0 +1,7 @@
+window.env = {
+  "GITLAB": "$GITLAB",
+  "OIDC_CLIENT_ID": "$OIDC_CLIENT_ID",
+  "SELECTED_TAGS": "$SELECTED_TAGS",
+  "SENTRY_DSN": "$SENTRY_DSN",
+  "PUBLIC_URL": "$PUBLIC_URL"
+};
