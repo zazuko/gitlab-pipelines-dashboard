@@ -18,6 +18,6 @@ ADD ./nginx/default.conf /etc/nginx/conf.d/default.conf
 ADD ./nginx/template-config.sh /docker-entrypoint.d/50-template-config.sh
 RUN chmod +x /docker-entrypoint.d/50-template-config.sh
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
 
 EXPOSE 80

@@ -4,3 +4,4 @@ Dockerfile
 .env
 .env.*
 public/env.js
+build/
