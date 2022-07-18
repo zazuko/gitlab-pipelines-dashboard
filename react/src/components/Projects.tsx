@@ -19,9 +19,9 @@ const Projects = () => {
   }
 
   if (projects.isSuccess) {
-    return <div className="container"><ul>{projects.data.map((project: any, i: number) => {
+    return <div className="container">{projects.data.map((project: any, i: number) => {
       return <Project key={i} project={project} />
-    })}</ul></div>
+    })}</div>
   }
 
   return <div className="container">

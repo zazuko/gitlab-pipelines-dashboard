@@ -106,25 +106,30 @@ header .container-left {
 .branch-created,
 .branch-waiting_for_resource,
 .branch-preparing,
-.branch-pending {
-  color: orange;
+.branch-pending,
+.branch-created a,
+.branch-waiting_for_resource a,
+.branch-preparing a,
+.branch-pending a {
+  color: #e67e22;
   text-decoration: none;
 }
 
-.branch-running {
-  color: blue;
+.branch-running,
+.branch-running a {
+  color: #2980b9;
   text-decoration: none;
 }
 
 .branch-success,
 .branch-success a {
-  color: green;
+  color: #27ae60;
   text-decoration: none;
 }
 
 .branch-failed,
 .branch-failed a {
-  color: red;
+  color: #c0392b;
   text-decoration: none;
 }
 
@@ -136,6 +141,53 @@ header .container-left {
 .branch-skipped a,
 .branch-manual a,
 .branch-scheduled a {
-  color: black;
+  color: #2c3e50;
   text-decoration: none;
+}
+
+
+.badge {
+  color: #fff;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 0 12px;
+  text-align: center;
+  width: 100px;
+}
+
+.pipeline-dot {
+  color: #fff;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 12px 4px;
+  margin: 0 4px;
+  text-align: center;
+  width: 8px;
+}
+
+.badge-created,
+.badge-waiting_for_resource,
+.badge-preparing,
+.badge-pending {
+  background-color: #e67e22;
+}
+
+.badge-running {
+  background-color: #2980b9;
+}
+
+.badge-success {
+  background-color: #27ae60;
+}
+
+.badge-failed {
+  background-color: #c0392b;
+}
+
+.badge-canceled,
+.badge-skipped,
+.badge-manual,
+.badge-scheduled {
+  background-color: #2c3e50;
 }

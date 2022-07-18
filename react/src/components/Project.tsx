@@ -10,10 +10,16 @@ const Project: FC<Props> = ({ project }) => {
   const openStatusClass = open ? 'open' : 'close';
   const arrow = open ? '▲' : '▼';
 
+  const reversedPipelines = [].concat(project.pipelines).reverse();
+
   return <div className={`project-item ${openStatusClass}`} onClick={() => setOpen(!open)}>
     <div className="project-title">
       <div className="project-title-left"><p>{ project.name_with_namespace }</p></div>
-      <div className="project-title-right">{ arrow }</div>
+      <div className="project-title-right">
+        { reversedPipelines.map((p: any, i: number) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={i}></span>)}
+        <span className={ `badge badge-${project.status}` }>{ project.status }</span>
+        { arrow }
+      </div>
     </div>
     <div className="project-details">
       <p>{ project.description && `${project.description} - ` }<a href={ project.web_url } target="_blank" rel="noopener noreferrer">Open project on GitLab</a></p>

@@ -32,7 +32,11 @@ const addAddtionalProjectFields = async (accessToken: string, project: any): Pro
 
   project.branches = branches;
   project.schedules = await gitlabQuery(urls.pipelinesSchedules, accessToken);
-  project.pipelines = await gitlabQuery(urls.pipelinesSchedules, accessToken, 'sort=desc&per_page=10');
+  project.status = undefined;
+  project.pipelines = await gitlabQuery(urls.pipelines, accessToken, 'sort=desc&per_page=10');
+  if (project.pipelines.length > 0) {
+    project.status = project.pipelines[0].status.replace('waiting_for_resource', 'pending');
+  }
 
   return project;
 };
