@@ -22,12 +22,17 @@ const addAddtionalProjectFields = async (accessToken: string, project: any): Pro
 
   const rawBranches = await gitlabQuery(urls.branches, accessToken) as any[];
   const branches = await Promise.all(rawBranches.map(async (branch: any) => {
+    branch.status = undefined;
     branch.pipelines = await gitlabQuery(urls.pipelines, accessToken, `ref=${encodeURI(branch.name)}&sort=desc&per_page=1`);
+    if (branch.pipelines.length > 0) {
+      branch.status = branch.pipelines[0].status;
+    }
     return branch;
   }));
 
   project.branches = branches;
   project.schedules = await gitlabQuery(urls.pipelinesSchedules, accessToken);
+  project.pipelines = await gitlabQuery(urls.pipelinesSchedules, accessToken, 'sort=desc&per_page=10');
 
   return project;
 };

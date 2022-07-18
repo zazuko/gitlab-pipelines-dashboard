@@ -3,7 +3,7 @@
   "version": "0.1.8",
   "private": true,
   "dependencies": {
-    "@axa-fr/react-oidc": "^5.13.2",
+    "@axa-fr/react-oidc": "^5.14.0",
     "@ludovicm67/react-dotenv": "^1.0.4",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
