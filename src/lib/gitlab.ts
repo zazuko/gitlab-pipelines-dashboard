@@ -41,9 +41,41 @@ const addAddtionalProjectFields = async (accessToken: string, project: any): Pro
   return project;
 };
 
+const statusWeight = (status: string): number => {
+  switch (status) {
+    case 'created':
+      return 5;
+    case 'waiting_for_resource':
+      return 6;
+    case 'preparing':
+      return 7;
+    case 'pending':
+      return 8;
+    case 'running':
+      return 10;
+    case 'success':
+      return 9;
+    case 'failed':
+      return 11;
+    case 'canceled':
+      return 4;
+    case 'skipped':
+      return 3;
+    case 'manual':
+      return 1;
+    case 'scheduled':
+      return 2;
+  }
+
+  return 0;
+}
+
 export const getProjects = async (accessToken: string, tags = ['monitoring']): Promise<{}> => {
   const projects = await gitlabQuery('/v4/projects', accessToken);
   const filteredProjects = filterProjectsByTags(projects, tags);
   const projectsWithBranches = await Promise.all(filteredProjects.map(async (project: any) => await addAddtionalProjectFields(accessToken, project)));
-  return projectsWithBranches;
+  const sortedProjects = projectsWithBranches.sort((a, b) => {
+    return statusWeight(b.status) - statusWeight(a.status);
+  });
+  return sortedProjects;
 };
