@@ -1,6 +1,6 @@
 import { useOidcUser, OidcUserStatus, useOidcAccessToken } from '@axa-fr/react-oidc';
 import { useQuery } from 'react-query';
-import gitlabQuery from '../lib/gitlabQuery';
+import { getProjects } from '../lib/gitlab';
 import Project from './Project';
 
 const Projects = () => {
@@ -9,7 +9,7 @@ const Projects = () => {
 
   const isLoggedIn = accessToken && oidcUserLoadingState === OidcUserStatus.Loaded;
 
-  const projects = useQuery<any, Error>('gitlab-projects', () => gitlabQuery('/v4/projects', accessToken));
+  const projects = useQuery<any, Error>('gitlab-projects', () => getProjects(accessToken, ['monitoring']));
   if (!isLoggedIn) {
     return <div className="container"><p>You are not logged in. Try to refresh the page.</p></div>
   }
