@@ -9,7 +9,12 @@ const Projects = () => {
 
   const isLoggedIn = accessToken && oidcUserLoadingState === OidcUserStatus.Loaded;
 
-  const projects = useQuery<any, Error>('gitlab-projects', () => getProjects(accessToken, ['monitoring']));
+  const projects = useQuery<any, Error>('gitlab-projects', () => getProjects(accessToken, ['monitoring']), {
+    refetchInterval: 120000,
+    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: true,
+    refetchOnReconnect: true,
+  });
   if (!isLoggedIn) {
     return <div className="container"><p>You are not logged in. Try to refresh the page.</p></div>
   }

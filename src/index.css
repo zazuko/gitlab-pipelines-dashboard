@@ -160,10 +160,11 @@ header .container-left {
   color: #fff;
   display: inline-block;
   border-radius: 5px;
-  padding: 12px 4px;
+  padding: 4px;
   margin: 0 4px;
   text-align: center;
   width: 8px;
+  font-size: 12px;
 }
 
 .badge-created,

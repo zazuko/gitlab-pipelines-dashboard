@@ -16,7 +16,7 @@ const Project: FC<Props> = ({ project }) => {
     <div className="project-title">
       <div className="project-title-left"><p>{ project.name_with_namespace }</p></div>
       <div className="project-title-right">
-        { reversedPipelines.map((p: any, i: number) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={i}></span>)}
+        { reversedPipelines.map((p: any, i: number) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={i}>{ `${p.ref}`.charAt(0).toLocaleUpperCase() }</span>)}
         <span className={ `badge badge-${project.status}` }>{ project.status }</span>
         { arrow }
       </div>
