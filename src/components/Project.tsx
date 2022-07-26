@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import cronstrue from "cronstrue";
 
 type Props = {
   project: any;
@@ -40,7 +41,7 @@ const Project: FC<Props> = ({ project }) => {
               <ul>
                 <li><strong>{ schedule.description }</strong></li>
                 <li>Ref: { schedule.ref }</li>
-                <li>Cron: { schedule.cron }</li>
+                <li>Runs: <abbr title={schedule.cron}>{ cronstrue.toString(schedule.cron, { use24HourTimeFormat: true }) }</abbr> ({ schedule.cron_timezone } timezone)</li>
               </ul>
             </li>
         })}
