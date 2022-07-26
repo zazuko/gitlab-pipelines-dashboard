@@ -34,18 +34,19 @@ const Project: FC<Props> = ({ project }) => {
         })}
       </ul>
 
-      <p>Schedules:</p>
-      <ul>
-        { project.schedules.map((schedule: any, i: number) => {
-          return <li key={i}>
-              <ul>
-                <li><strong>{ schedule.description }</strong></li>
-                <li>Ref: { schedule.ref }</li>
-                <li>Runs: <abbr title={schedule.cron}>{ cronstrue.toString(schedule.cron, { use24HourTimeFormat: true }) }</abbr> ({ schedule.cron_timezone } timezone)</li>
-              </ul>
-            </li>
-        })}
-      </ul>
+      { project.schedules.length > 0 && <>
+        <p>Schedules:</p>
+        <ul>
+          { project.schedules.map((schedule: any, i: number) => {
+            const cronString = cronstrue.toString(schedule.cron, { use24HourTimeFormat: true });
+            return <li key={i}>
+                <p><strong>{ schedule.description }</strong> (ref: <a href={ `${project.web_url}/-/tree/${encodeURI(schedule.ref)}` } target="_blank" rel="noopener noreferrer">{ schedule.ref }</a>)</p>
+                <p>Runs: <abbr title={schedule.cron}>{ cronString }</abbr> ({ schedule.cron_timezone } timezone)</p>
+              </li>
+          })}
+        </ul>
+      </>}
+
     </div>
   </div>
 };
