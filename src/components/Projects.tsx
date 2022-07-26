@@ -1,5 +1,5 @@
 import { useOidcUser, OidcUserStatus, useOidcAccessToken } from '@axa-fr/react-oidc';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getProjects } from '../lib/gitlab';
 import Project from './Project';
 
@@ -9,7 +9,7 @@ const Projects = () => {
 
   const isLoggedIn = accessToken && oidcUserLoadingState === OidcUserStatus.Loaded;
 
-  const projects = useQuery<any, Error>('gitlab-projects', () => getProjects(accessToken, ['monitoring']), {
+  const projects = useQuery<any, Error>(['gitlab-projects'], () => getProjects(accessToken, ['monitoring']), {
     refetchInterval: 120000,
     refetchOnWindowFocus: true,
     refetchIntervalInBackground: true,

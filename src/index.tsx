@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { OidcProvider } from '@axa-fr/react-oidc';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { clientId, gitlabUrl, publicUrl } from './lib/env';
 import './index.css';
 import App from './App';
