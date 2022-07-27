@@ -15,8 +15,8 @@ const Project: FC<Props> = ({ project }) => {
   let reversedPipelines: Pipeline[] = [];
   reversedPipelines = reversedPipelines.concat(project.pipelines).reverse();
 
-  return <div className={`project-item ${openStatusClass}`} onClick={() => setOpen(!open)}>
-    <div className="project-title">
+  return <div className={`project-item ${openStatusClass}`}>
+    <div className="project-title" onClick={() => setOpen(!open)}>
       <div className="project-title-left"><p>{ project.name_with_namespace }</p></div>
       <div className="project-title-right">
         { reversedPipelines.map((p: Pipeline) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={p.id}>{ `${p.ref}`.charAt(0).toLocaleUpperCase() }</span>)}
