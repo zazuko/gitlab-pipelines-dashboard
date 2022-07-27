@@ -79,7 +79,15 @@ export const getProjects = async (accessToken: string, tags: string[]): Promise<
   const filteredProjects = filterProjectsByTags(projects, tags);
   const projectsWithBranches = await Promise.all(filteredProjects.map(async (project: Project) => await addAddtionalProjectFields(accessToken, project)));
   const sortedProjects = projectsWithBranches.sort((a, b) => {
-    return statusWeight(b.status) - statusWeight(a.status);
+    const weight = statusWeight(b.status) - statusWeight(a.status);
+    if (weight !== 0) {
+      return weight;
+    }
+
+    const aLastPipelineRun = a.pipelines.length > 0 ? (new Date(a.pipelines[0].created_at)).getTime() : 0;
+    const bLastPipelineRun = b.pipelines.length > 0 ? (new Date(b.pipelines[0].created_at)).getTime() : 0;
+
+    return bLastPipelineRun - aLastPipelineRun;
   });
   return sortedProjects;
 };
