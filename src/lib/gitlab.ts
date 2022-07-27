@@ -70,7 +70,7 @@ const statusWeight = (status: string): number => {
   return 0;
 }
 
-export const getProjects = async (accessToken: string, tags = ['monitoring']): Promise<{}> => {
+export const getProjects = async (accessToken: string, tags: string[]): Promise<{}> => {
   const projects = await gitlabQuery('/v4/projects', accessToken);
   const filteredProjects = filterProjectsByTags(projects, tags);
   const projectsWithBranches = await Promise.all(filteredProjects.map(async (project: any) => await addAddtionalProjectFields(accessToken, project)));
