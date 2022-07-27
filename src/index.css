@@ -220,6 +220,7 @@ header .container-left {
 
   .pipeline-dot {
     font-size: 8px;
+    margin: 0 2px;
   }
 
   .badge {
