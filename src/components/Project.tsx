@@ -27,14 +27,16 @@ const Project: FC<Props> = ({ project }) => {
     <div className="project-details">
       <p>{ project.description && `${project.description} - ` }<a href={ project.web_url } target="_blank" rel="noopener noreferrer">Open project on GitLab</a></p>
 
-      <p>Branches:</p>
-      <ul>
-        { project.branches.map((branch: AugmentedBranch) => {
-          const branchStatus = `branch-${branch.status || 'unknown'}`;
-          const branchLink = <a href={ `${project.web_url}/-/tree/${encodeURI(branch.name)}` } target="_blank" rel="noopener noreferrer">{ branch.default ? <strong>{ branch.name }</strong> : branch.name }</a>;
-          return <li key={branch.name} className={branchStatus}>{ branchLink }</li>;
-        })}
-      </ul>
+      { project.branches.length > 0 && <>
+        <p>Branches:</p>
+        <ul>
+          { project.branches.map((branch: AugmentedBranch) => {
+            const branchStatus = `branch-${branch.status || 'unknown'}`;
+            const branchLink = <a href={ `${project.web_url}/-/tree/${encodeURI(branch.name)}` } target="_blank" rel="noopener noreferrer">{ branch.default ? <strong>{ branch.name }</strong> : branch.name }</a>;
+            return <li key={branch.name} className={branchStatus}>{ branchLink }</li>;
+          })}
+        </ul>
+      </>}
 
       { project.schedules.length > 0 && <>
         <p>Schedules:</p>
