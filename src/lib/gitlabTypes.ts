@@ -45,6 +45,7 @@ export type Pipeline = {
   status: PipelineStatus;
   source: string;
   web_url: string;
+  created_at: string;
 };
 
 export type PipelineSchedule = {
