@@ -1,4 +1,5 @@
 import { useOidcUser, OidcUserStatus, useOidcAccessToken } from '@axa-fr/react-oidc';
+import env from '@ludovicm67/react-dotenv';
 import { useQuery } from '@tanstack/react-query';
 import { getProjects } from '../lib/gitlab';
 import { AugmentedProject } from '../lib/gitlabTypes';
@@ -7,10 +8,11 @@ import Project from './Project';
 const Projects = () => {
   const { accessToken } = useOidcAccessToken();
   const { oidcUserLoadingState } = useOidcUser();
+  const selectedTags = `${env.SELECTED_TAGS}`.split(',').map(tag => tag.trim());
 
   const isLoggedIn = accessToken && oidcUserLoadingState === OidcUserStatus.Loaded;
 
-  const projects = useQuery<AugmentedProject[], Error>(['gitlab-projects'], () => getProjects(accessToken, ['monitoring']), {
+  const projects = useQuery<AugmentedProject[], Error>(['gitlab-projects'], () => getProjects(accessToken, selectedTags), {
     refetchInterval: 120000,
     refetchOnWindowFocus: true,
     refetchIntervalInBackground: true,
