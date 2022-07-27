@@ -1,6 +1,7 @@
 import gitlabQuery from "./gitlabQuery";
+import { AugmentedBranch, AugmentedProject, Branch, Pipeline, PipelineSchedule, Project } from "./gitlabTypes";
 
-const projectUrls = (project: any) => {
+const projectUrls = (project: Project) => {
   const base = `/v4/projects/${project.id}`;
   return {
     project: `${base}`,
@@ -10,18 +11,19 @@ const projectUrls = (project: any) => {
   }
 };
 
-const filterProjectsByTags = (projects: any, tags: string[]) => {
+const filterProjectsByTags = (projects: Project[], tags: string[]): Project[] => {
   if (tags.length === 0) {
     return projects;
   }
-  return projects.filter((project: any) => tags.every(tag => project.topics.includes(tag)));
+  return projects.filter((project: Project) => tags.some(tag => project.topics.includes(tag)));
 };
 
-const addAddtionalProjectFields = async (accessToken: string, project: any): Promise<{}> => {
+const addAddtionalProjectFields = async (accessToken: string, project: Project): Promise<AugmentedProject> => {
   const urls = projectUrls(project);
 
-  const rawBranches = await gitlabQuery(urls.branches, accessToken) as any[];
-  const branches = await Promise.all(rawBranches.map(async (branch: any) => {
+  const rawBranches = await gitlabQuery<Branch>(urls.branches, accessToken);
+  const branches = await Promise.all(rawBranches.map(async (b: Branch) => {
+    const branch = b as AugmentedBranch;
     branch.status = undefined;
     branch.pipelines = await gitlabQuery(urls.pipelines, accessToken, `ref=${encodeURI(branch.name)}&sort=desc&per_page=1`);
     if (branch.pipelines.length > 0) {
@@ -30,18 +32,20 @@ const addAddtionalProjectFields = async (accessToken: string, project: any): Pro
     return branch;
   }));
 
-  project.branches = branches;
-  project.schedules = await gitlabQuery(urls.pipelinesSchedules, accessToken);
-  project.status = undefined;
-  project.pipelines = await gitlabQuery(urls.pipelines, accessToken, 'sort=desc&per_page=10');
-  if (project.pipelines.length > 0) {
-    project.status = project.pipelines[0].status.replace('waiting_for_resource', 'pending');
+  const augmentedProject = project as AugmentedProject;
+
+  augmentedProject.branches = branches;
+  augmentedProject.schedules = await gitlabQuery<PipelineSchedule>(urls.pipelinesSchedules, accessToken);
+  augmentedProject.status = undefined;
+  augmentedProject.pipelines = await gitlabQuery<Pipeline>(urls.pipelines, accessToken, 'sort=desc&per_page=10');
+  if (augmentedProject.pipelines.length > 0) {
+    augmentedProject.status = augmentedProject.pipelines[0].status.replace('waiting_for_resource', 'pending');
   }
 
-  return project;
+  return augmentedProject;
 };
 
-const statusWeight = (status: string): number => {
+const statusWeight = (status?: string): number => {
   switch (status) {
     case 'created':
       return 5;
@@ -70,10 +74,10 @@ const statusWeight = (status: string): number => {
   return 0;
 }
 
-export const getProjects = async (accessToken: string, tags: string[]): Promise<{}> => {
-  const projects = await gitlabQuery('/v4/projects', accessToken);
+export const getProjects = async (accessToken: string, tags: string[]): Promise<AugmentedProject[]> => {
+  const projects = await gitlabQuery<Project>('/v4/projects', accessToken);
   const filteredProjects = filterProjectsByTags(projects, tags);
-  const projectsWithBranches = await Promise.all(filteredProjects.map(async (project: any) => await addAddtionalProjectFields(accessToken, project)));
+  const projectsWithBranches = await Promise.all(filteredProjects.map(async (project: Project) => await addAddtionalProjectFields(accessToken, project)));
   const sortedProjects = projectsWithBranches.sort((a, b) => {
     return statusWeight(b.status) - statusWeight(a.status);
   });

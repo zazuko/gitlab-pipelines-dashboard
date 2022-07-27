@@ -1,8 +1,9 @@
 import { FC, useState } from "react";
 import cronstrue from "cronstrue";
+import { AugmentedBranch, AugmentedProject, Pipeline, PipelineSchedule } from "../lib/gitlabTypes";
 
 type Props = {
-  project: any;
+  project: AugmentedProject;
 }
 
 const Project: FC<Props> = ({ project }) => {
@@ -11,13 +12,14 @@ const Project: FC<Props> = ({ project }) => {
   const openStatusClass = open ? 'open' : 'close';
   const arrow = open ? '▲' : '▼';
 
-  const reversedPipelines = [].concat(project.pipelines).reverse();
+  let reversedPipelines: Pipeline[] = [];
+  reversedPipelines = reversedPipelines.concat(project.pipelines).reverse();
 
   return <div className={`project-item ${openStatusClass}`} onClick={() => setOpen(!open)}>
     <div className="project-title">
       <div className="project-title-left"><p>{ project.name_with_namespace }</p></div>
       <div className="project-title-right">
-        { reversedPipelines.map((p: any, i: number) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={i}>{ `${p.ref}`.charAt(0).toLocaleUpperCase() }</span>)}
+        { reversedPipelines.map((p: Pipeline, i: number) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={i}>{ `${p.ref}`.charAt(0).toLocaleUpperCase() }</span>)}
         <span className={ `badge badge-${project.status}` }>{ project.status }</span>
         { arrow }
       </div>
@@ -27,7 +29,7 @@ const Project: FC<Props> = ({ project }) => {
 
       <p>Branches:</p>
       <ul>
-        { project.branches.map((branch: any) => {
+        { project.branches.map((branch: AugmentedBranch) => {
           const branchStatus = `branch-${branch.status || 'unknown'}`;
           const branchLink = <a href={ `${project.web_url}/-/tree/${encodeURI(branch.name)}` } target="_blank" rel="noopener noreferrer">{ branch.default ? <strong>{ branch.name }</strong> : branch.name }</a>;
           return <li key={branch.name} className={branchStatus}>{ branchLink }</li>;
@@ -37,7 +39,7 @@ const Project: FC<Props> = ({ project }) => {
       { project.schedules.length > 0 && <>
         <p>Schedules:</p>
         <ul>
-          { project.schedules.map((schedule: any, i: number) => {
+          { project.schedules.map((schedule: PipelineSchedule, i: number) => {
             const cronString = cronstrue.toString(schedule.cron, { use24HourTimeFormat: true });
             return <li key={i}>
                 <p><strong>{ schedule.description }</strong> (ref: <a href={ `${project.web_url}/-/tree/${encodeURI(schedule.ref)}` } target="_blank" rel="noopener noreferrer">{ schedule.ref }</a>)</p>

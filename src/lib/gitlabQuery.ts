@@ -1,10 +1,10 @@
 import { gitlabUrl } from './env';
 
-const fetchAllPages = async (url: string, additionalParams?: string) => {
+const fetchAllPages = async <T>(url: string, additionalParams?: string): Promise<T[]> => {
   const perPage = 50;
   let page = 1;
 
-  let results: any[] = [];
+  let results: T[] = [];
 
   let params = '';
   if (additionalParams) {
@@ -34,9 +34,9 @@ const fetchAllPages = async (url: string, additionalParams?: string) => {
   return results;
 }
 
-const gitlabQuery = async (url: string, token: string, additionalParams?: string): Promise<{}> => {
+const gitlabQuery = async <T>(url: string, token: string, additionalParams?: string): Promise<T[]> => {
   const base = (`${url}`.startsWith('http://') || `${url}`.startsWith('https://')) ? '' : `${gitlabUrl}/api`;
-  const results = await fetchAllPages(
+  const results = await fetchAllPages<T>(
     `${base}${url}?access_token=${token}`,
     additionalParams,
   );
