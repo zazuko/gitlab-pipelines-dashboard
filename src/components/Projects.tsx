@@ -41,8 +41,8 @@ const Projects = () => {
       <div className="projects-filter">
         <input type="text" placeholder="Filter projects by name…" onChange={(e) => setFilter(e.target.value.toLocaleLowerCase())} value={filter} />
       </div>
-      {filteredProjects.map((project: AugmentedProject, i: number) => {
-        return <Project key={i} project={project} />
+      {filteredProjects.map((project: AugmentedProject) => {
+        return <Project key={project.id} project={project} />
       })}
     </div>
   }

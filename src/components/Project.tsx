@@ -19,7 +19,7 @@ const Project: FC<Props> = ({ project }) => {
     <div className="project-title">
       <div className="project-title-left"><p>{ project.name_with_namespace }</p></div>
       <div className="project-title-right">
-        { reversedPipelines.map((p: Pipeline, i: number) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={i}>{ `${p.ref}`.charAt(0).toLocaleUpperCase() }</span>)}
+        { reversedPipelines.map((p: Pipeline) => <span className={ `pipeline-dot badge-${p.status}` } title={p.ref} key={p.id}>{ `${p.ref}`.charAt(0).toLocaleUpperCase() }</span>)}
         <span className={ `badge badge-${project.status}` }>{ project.status }</span>
         { arrow }
       </div>
@@ -39,9 +39,9 @@ const Project: FC<Props> = ({ project }) => {
       { project.schedules.length > 0 && <>
         <p>Schedules:</p>
         <ul>
-          { project.schedules.map((schedule: PipelineSchedule, i: number) => {
+          { project.schedules.map((schedule: PipelineSchedule) => {
             const cronString = cronstrue.toString(schedule.cron, { use24HourTimeFormat: true });
-            return <li key={i}>
+            return <li key={schedule.id}>
                 <p><strong>{ schedule.description }</strong> (ref: <a href={ `${project.web_url}/-/tree/${encodeURI(schedule.ref)}` } target="_blank" rel="noopener noreferrer">{ schedule.ref }</a>)</p>
                 <p>Runs: <abbr title={schedule.cron}>{ cronString }</abbr> ({ schedule.cron_timezone } timezone)</p>
               </li>
