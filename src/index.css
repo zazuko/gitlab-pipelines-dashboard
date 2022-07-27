@@ -59,6 +59,16 @@ header .container-left {
   background-color: #f1f1f1;
 }
 
+.projects-filter {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.projects-filter input {
+  flex: 1;
+  padding: 12px;
+}
+
 .project-item {
   background: #fff;
   padding: 8px 24px;
