@@ -211,6 +211,7 @@ header .container-left {
   .project-title {
     flex-direction: column;
     font-size: 14px;
+    overflow: hidden;
   }
 
   .project-title-right {
