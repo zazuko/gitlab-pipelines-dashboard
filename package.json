@@ -55,7 +55,6 @@
       "GITLAB",
       "OIDC_CLIENT_ID",
       "SELECTED_TAGS",
-      "SENTRY_DSN",
       "PUBLIC_URL"
     ]
   }
