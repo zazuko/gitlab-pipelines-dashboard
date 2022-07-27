@@ -1,6 +1,6 @@
 {
   "name": "gitlab-pipelines-dashboard",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "private": true,
   "dependencies": {
     "@axa-fr/react-oidc": "6.0.0-alpha8",
