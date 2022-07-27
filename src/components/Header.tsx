@@ -1,6 +1,9 @@
 import { useOidcIdToken, useOidcUser, OidcUserStatus } from '@axa-fr/react-oidc';
 import ZazukoLogo from './logo.svg'
 
+/**
+ * Header of the page.
+ */
 const Header = () => {
   const { idToken } = useOidcIdToken();
   const { oidcUser, oidcUserLoadingState } = useOidcUser();

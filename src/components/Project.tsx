@@ -3,10 +3,16 @@ import cronstrue from "cronstrue";
 import TimeAgo from "react-timeago";
 import { AugmentedBranch, AugmentedProject, Pipeline, PipelineSchedule } from "../lib/gitlabTypes";
 
+/**
+ * Project properties.
+ */
 type Props = {
   project: AugmentedProject;
 }
 
+/**
+ * Render a project.
+ */
 const Project: FC<Props> = ({ project }) => {
   const [open, setOpen] = useState<boolean>(false);
 

@@ -1,6 +1,12 @@
 import gitlabQuery from "./gitlabQuery";
 import { AugmentedBranch, AugmentedProject, Branch, Pipeline, PipelineSchedule, Project } from "./gitlabTypes";
 
+/**
+ * Generate some useful URLs from a GitLab project.
+ *
+ * @param project Project to get URLs from.
+ * @returns List of useful URLs.
+ */
 const projectUrls = (project: Project) => {
   const base = `/v4/projects/${project.id}`;
   return {
@@ -11,6 +17,14 @@ const projectUrls = (project: Project) => {
   }
 };
 
+/**
+ * Filter a list of projects to have a specific tag.
+ * Returns all projects if `tags` is empty.
+ *
+ * @param projects List of projects.
+ * @param tags Tags to filter projects.
+ * @returns Filtered projects.
+ */
 const filterProjectsByTags = (projects: Project[], tags: string[]): Project[] => {
   if (tags.length === 0) {
     return projects;
@@ -18,6 +32,13 @@ const filterProjectsByTags = (projects: Project[], tags: string[]): Project[] =>
   return projects.filter((project: Project) => tags.some(tag => project.topics.includes(tag)));
 };
 
+/**
+ * Add more information to a project.
+ *
+ * @param accessToken AccessToken to query GitLab API.
+ * @param project GitLab project.
+ * @returns Project with additional fields, like `branches`, `schedules`, `pipelines` and `status`.
+ */
 const addAddtionalProjectFields = async (accessToken: string, project: Project): Promise<AugmentedProject> => {
   const urls = projectUrls(project);
 
@@ -45,6 +66,13 @@ const addAddtionalProjectFields = async (accessToken: string, project: Project):
   return augmentedProject;
 };
 
+/**
+ * Get the weight of a specific pipeline status.
+ * This is used for sorting the list of projects.
+ *
+ * @param status Status of the last pipeline run.
+ * @returns Weight of the given status.
+ */
 const statusWeight = (status?: string): number => {
   switch (status) {
     case 'created':
@@ -74,6 +102,13 @@ const statusWeight = (status?: string): number => {
   return 0;
 }
 
+/**
+ * Get a list of GitLab projects.
+ *
+ * @param accessToken AccessToken to query GitLab API.
+ * @param tags Tags to filter projects.
+ * @returns List of GitLab projects.
+ */
 export const getProjects = async (accessToken: string, tags: string[]): Promise<AugmentedProject[]> => {
   const projects = await gitlabQuery<Project>('/v4/projects', accessToken);
   const filteredProjects = filterProjectsByTags(projects, tags);

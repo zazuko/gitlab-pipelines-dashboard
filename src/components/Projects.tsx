@@ -6,6 +6,9 @@ import { getProjects } from '../lib/gitlab';
 import { AugmentedProject } from '../lib/gitlabTypes';
 import Project from './Project';
 
+/**
+ * Render the list of all projects.
+ */
 const Projects = () => {
   const [ filter, setFilter ] = useState<string>('');
   const { accessToken } = useOidcAccessToken();
