@@ -85,6 +85,13 @@ header .container-left {
   display: block;
 }
 
+.project-last-run {
+  font-weight: lighter;
+  font-size: 12px;
+  display: inline-block;
+  margin-right: 8px;
+}
+
 .project-title {
   display: flex;
   padding: 8px 24px;
@@ -225,5 +232,9 @@ header .container-left {
 
   .badge {
     padding: 4px;
+  }
+
+  .project-last-run {
+    display: none;
   }
 }
