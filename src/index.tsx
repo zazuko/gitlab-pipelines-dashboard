@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { OidcProvider } from '@axa-fr/react-oidc';
+import { OidcConfiguration, OidcProvider } from '@axa-fr/react-oidc';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { clientId, gitlabUrl, publicUrl } from './lib/env';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const OIDCConfiguration = {
+const OIDCConfiguration: OidcConfiguration = {
   client_id: clientId || '',
   redirect_uri: `${publicUrl}/oidc/callback`,
   scope: 'openid profile email read_api read_user api',
   authority: gitlabUrl || 'https://gitlab.com',
   authority_configuration: {
+    issuer: gitlabUrl || 'https://gitlab.com',
     authorization_endpoint: `${gitlabUrl}/oauth/authorize`,
     token_endpoint: `${gitlabUrl}/oauth/token`,
     userinfo_endpoint: `${gitlabUrl}/oauth/userinfo`,
