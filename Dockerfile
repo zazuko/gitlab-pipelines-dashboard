@@ -1,4 +1,4 @@
-ARG NODE_VERSION=16
+ARG NODE_VERSION=18
 
 FROM docker.io/library/node:${NODE_VERSION} as builder
 
